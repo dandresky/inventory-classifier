@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B002N2AVYS": {
+            "asin": "B002N2AVYS",
+            "height": {
+                "unit": "IN",
+                "value": 1.9
+            },
+            "length": {
+                "unit": "IN",
+                "value": 9.1
+            },
+            "name": "Rothco Hard Knuckle Tactical Gloves, Black, XX-Large",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.25
+            },
+            "width": {
+                "unit": "IN",
+                "value": 3.9
+            }
+        },
+        "B00G75X158": {
+            "asin": "B00G75X158",
+            "height": {
+                "unit": "IN",
+                "value": 1.6999999999999997
+            },
+            "length": {
+                "unit": "IN",
+                "value": 4.299999999999999
+            },
+            "name": "Vitamin C Serum for Face with Hyaluronic Acid, 20% C + E Professional Topical Facial Skin Care Helps Repair Sun Damage, Fade Age Spots, Dark Circles, Wrinkles & Fine Lines BEST ORGANIC - 1 oz.",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.20000000000000004
+            },
+            "width": {
+                "unit": "IN",
+                "value": 1.6999999999999997
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "530.jpg"
+}

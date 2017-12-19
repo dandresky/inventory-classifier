@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B004U7JYXS": {
+            "asin": "B004U7JYXS",
+            "height": {
+                "unit": "IN",
+                "value": 2.677165354330709
+            },
+            "length": {
+                "unit": "IN",
+                "value": 4.645669291338582
+            },
+            "name": "Fujifilm Instax Mini Instant Film, 10 Sheets x 5 packs",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.4850120260936471
+            },
+            "width": {
+                "unit": "IN",
+                "value": 4.251968503937008
+            }
+        },
+        "B00GNBZKXW": {
+            "asin": "B00GNBZKXW",
+            "height": {
+                "unit": "IN",
+                "value": 1.1023622047244095
+            },
+            "length": {
+                "unit": "IN",
+                "value": 7.874015748031496
+            },
+            "name": "Santa Outfit Embroidered Bodysuit, Frenchie Mini Couture - 6 months",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.17636800948859893
+            },
+            "width": {
+                "unit": "IN",
+                "value": 5.039370078740157
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "525.jpg"
+}

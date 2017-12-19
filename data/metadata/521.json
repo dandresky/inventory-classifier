@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00WLIUI74": {
+            "asin": "B00WLIUI74",
+            "height": {
+                "unit": "IN",
+                "value": 3.3999999999999995
+            },
+            "length": {
+                "unit": "IN",
+                "value": 5.2
+            },
+            "name": "xtf2015 Ultra Bright LED Lantern - Camping Lantern - Collapses - Suitable For: Hiking, Camping, Emergencies, Hurricanes, Outages - Super Bright - Lightweight - Water Resistant - Black",
+            "quantity": 2,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.65
+            },
+            "width": {
+                "unit": "IN",
+                "value": 3.6
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "521.jpg"
+}

@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00CSWH7G8": {
+            "asin": "B00CSWH7G8",
+            "height": {
+                "unit": "IN",
+                "value": 6.500000000000001
+            },
+            "length": {
+                "unit": "IN",
+                "value": 9.3
+            },
+            "name": "Jim Shore Halloween Is At Hand",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 3.45
+            },
+            "width": {
+                "unit": "IN",
+                "value": 7.8
+            }
+        },
+        "B019NOTJ1O": {
+            "asin": "B019NOTJ1O",
+            "height": {
+                "unit": "IN",
+                "value": 2.1000000000000005
+            },
+            "length": {
+                "unit": "IN",
+                "value": 9.0
+            },
+            "name": "Polo Ralph Lauren Unisex Merino Wool Cuff Olive Green Beanie Hat One Size",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.15
+            },
+            "width": {
+                "unit": "IN",
+                "value": 6.6
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "526.jpg"
+}

@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00RIXY68Y": {
+            "asin": "B00RIXY68Y",
+            "height": {
+                "unit": "IN",
+                "value": 2.3
+            },
+            "length": {
+                "unit": "IN",
+                "value": 13.3
+            },
+            "name": "SiliPro Silicone Muffin Pan, 12 Cups",
+            "quantity": 2,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.5
+            },
+            "width": {
+                "unit": "IN",
+                "value": 10.6
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "528.jpg"
+}

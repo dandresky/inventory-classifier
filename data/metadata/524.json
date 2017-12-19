@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "163344001X": {
+            "asin": "163344001X",
+            "height": {
+                "unit": "IN",
+                "value": 1.6999999999999997
+            },
+            "length": {
+                "unit": "IN",
+                "value": 8.400000000000002
+            },
+            "name": "Android Netrunner LCG: Order and Chaos Expansion",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.9499999999999998
+            },
+            "width": {
+                "unit": "IN",
+                "value": 8.2
+            }
+        },
+        "B010F8OFC0": {
+            "asin": "B010F8OFC0",
+            "height": {
+                "unit": "IN",
+                "value": 5.6
+            },
+            "length": {
+                "unit": "IN",
+                "value": 10.6
+            },
+            "name": "Best Fiends \"Devourer\" Limited Edition Glow-In-The-Dark Slug Toy Figure",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 1.15
+            },
+            "width": {
+                "unit": "IN",
+                "value": 8.2
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "524.jpg"
+}

@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00125PS5Y": {
+            "asin": "B00125PS5Y",
+            "height": {
+                "unit": "IN",
+                "value": 4.7
+            },
+            "length": {
+                "unit": "IN",
+                "value": 9.1
+            },
+            "name": "ScotchBlue Painter's Tape, Multi-Use, 1.41-Inch by 60-Yard, 6-Roll",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 3.1
+            },
+            "width": {
+                "unit": "IN",
+                "value": 5.0
+            }
+        },
+        "B00LJCUG3O": {
+            "asin": "B00LJCUG3O",
+            "height": {
+                "unit": "IN",
+                "value": 2.3
+            },
+            "length": {
+                "unit": "IN",
+                "value": 8.0
+            },
+            "name": "Nature's Approach Aromatherapy Belted Lumbar Wrap Herbal Pack, Celestial Red",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 2.05
+            },
+            "width": {
+                "unit": "IN",
+                "value": 7.900000000000001
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "527.jpg"
+}
