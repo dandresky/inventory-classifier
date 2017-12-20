@@ -1,4 +1,4 @@
-This document just contains my random notes on Amazon EC2 offerings for reference purposes.
+My random notes on Amazon EC2 offerings for reference purposes.
 
 ### Storage Options
 
