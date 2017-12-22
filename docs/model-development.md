@@ -1,6 +1,13 @@
 # Tools  
 
+Initially I am starting with the Keras Deep Learning library with the TensorFlow backend and will train on the cifar-10 image dataset to evaluate capabilities and learn the nuances of the framework.
 
+# CIFAR-10 image dataset with Keras and TensorFlow
+
+- [CIFAR-10 Homepage](https://www.cs.toronto.edu/~kriz/cifar.html)
+- [TensorFlow Tutorial](https://www.tensorflow.org/tutorials/deep_cnn)
+
+###
 
 
 

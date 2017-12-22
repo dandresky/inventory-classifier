@@ -1,4 +1,4 @@
-# Inventory Classifier
+# Inventory Classifier - Material count and classification using Convolutional Neural Net
 
 by David Andresky
 
@@ -29,5 +29,6 @@ The image and json document below are an example of what has been provided.
 [Associated JSON file](data/523.json)
 
 My notes on the implementation details can be found in the following documents:
+- [Amazon Machine Image (AWS)](docs/aws-environment) - Setup details for the AMI I created for this project. 
 - [Data Processing](docs/data-processing) - Notes on the images and JSON files supplied and how AWS S3 and EC2 are leveraged for storage and processing.
 - [Model Development](docs/model-development.md) - Notes on my strategy for developing the neural net model architecture. Includes intermediate steps or tests that may not make it in the final model.

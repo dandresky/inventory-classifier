@@ -12,6 +12,10 @@ Keras offers a gentle introduction into development and tuning of neural nets, s
 
 ### [Deep Learning 4J](https://deeplearning4j.org/)
 
+### [Caffe](http://caffe.berkeleyvision.org/)
+
+Caffe is a deep learning framework made with expression, speed, and modularity in mind. It is developed by Berkeley AI Research (BAIR) and by community contributors.
+
 
 # Low Level Deep Learning Frameworks
 

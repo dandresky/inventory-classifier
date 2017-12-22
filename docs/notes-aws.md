@@ -39,7 +39,7 @@ EFS - Elastic File System
 
 ### Compute Options
 
-Some EC2 types come with a local store that lives only as long as the instance lives. Once stopped or terminated, the data is lost.
+Some EC2 types come with a local store that lives only as long as the instance lives. Once stopped or terminated, the data is lost. This local store takes 5x to 10x longer to boot.
 
 ### Compute Terminology
 ECU stands for Elastic Compute Unit.
