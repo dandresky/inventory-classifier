@@ -18,6 +18,11 @@ Architectures
 - CNN's - Convolutional Neural Network
 - RNN's - Recurrent Neural Network
 - Recursive Neural Network
+- Recurrent Models of Visualization (Hybrid CNN and RNN)
+
+NOTE: CNN's are likely the best architecture for my project. However, a hybrid architecture exists called Recurrent Models of Visual Attention (see p.257 of Deep Learning book) that may be useful. These models are effective at dealing with images that are cluttered with multiple objects (as the Amazon images will be) that are difficult for traditional CNN's to deal with. It blends CNN for raw perception and RNN for time-domain. There is a second hybrid described as well that is designed to classify objects in a cluttered image.
+
+NOTE: Recursive Neural Net or some hybrid may ultimately be the best choice.
 
 # Activation Functions  
 
