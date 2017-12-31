@@ -5,9 +5,11 @@ Initial purpose is to identify all of the classes in the dataset.
 '''
 import boto3
 import botocore
+from collections import Counter
 from collections import defaultdict
 import datetime as dt
 import json
+import matplotlib.pyplot as plt
 import pickle
 import urllib
 import sys
@@ -53,6 +55,7 @@ def process_file(s3, file_path, item_dict):
 if __name__ == '__main__':
     if sys.argv[1] == 'getclasses':
         # read all of the json docs and get a count of the unique classes
+        # This takes 16hrs on PC and 5hrs on lowest level GPU
         classes = get_classes()
         print("There are ", len(classes.keys()), "classes.")
         with open('item_dict.pickle', 'wb') as handle:
@@ -64,8 +67,20 @@ if __name__ == '__main__':
             print(read_back)
     elif sys.argv[1] == 'plotclasses':
         # read the previously pickled dictionary and plot the frequency of items
+        classes = {}
         with open('item_dict.pickle', 'rb') as handle:
-            read_back = pickle.load(handle)
-            print(read_back)
+            classes = pickle.load(handle)
+        class_counts = Counter(classes.values())
+        # print(class_counts)
+        fig, ax = plt.subplots(1,1, figsize=(8,4))
+        bars = ax.bar(list(class_counts.keys()), class_counts.values(), width=0.4, color='g')
+        ax.set_xlim(0, 20)
+        ax.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
+        ax.set_ylabel('Number of Items')
+        ax.set_xlabel('Inventory Count')
+        ax.set_title('Items vs Inventory Counts')
+        plt.savefig('item_cnts.png')
+        plt.show()
+
     else:
         print("Argument required (getclasses, plotclasses)")

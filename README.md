@@ -16,6 +16,10 @@ Machine learning tools can be leveraged to help solve these crucial business iss
 
 Due to the time frames for the capstone project, the MVP will be a trained network that can count each of the distinct items in a storage location. As time permits, I will expand the project to classify each item and ultimately identify with unique part numbers/descriptions.
 
+# The Data
+
+The neural network wil be developed and trained on the Amazon Bin Image dataset.
+
 # Project Plan
 
 The Inventory Classifier will be developed and trained using the Amazon Bin Image Data Set.
@@ -26,7 +30,7 @@ The image and json document below are an example of what has been provided.
 
 ![](img/523.jpg)
 
-[Associated JSON file](data/523.json)
+![Associated JSON file](data/523.json)
 
 My notes on the implementation details can be found in the following documents:
 - [Amazon Machine Image (AWS)](docs/aws-environment) - Setup details for the AMI I created for this project.
