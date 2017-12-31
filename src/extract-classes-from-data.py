@@ -70,10 +70,10 @@ if __name__ == '__main__':
         classes = {}
         with open('item_dict.pickle', 'rb') as handle:
             classes = pickle.load(handle)
-        class_counts = Counter(classes.values())
+        inventory_counts = Counter(classes.values())
         # print(class_counts)
         fig, ax = plt.subplots(1,1, figsize=(8,4))
-        bars = ax.bar(list(class_counts.keys()), class_counts.values(), width=0.4, color='g')
+        bars = ax.bar(list(inventory_counts.keys()), inventory_counts.values(), width=0.4, color='g')
         ax.set_xlim(0, 20)
         ax.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
         ax.set_ylabel('Number of Items')
@@ -81,6 +81,7 @@ if __name__ == '__main__':
         ax.set_title('Items vs Inventory Counts')
         plt.savefig('item_cnts.png')
         plt.show()
+        print(len(classes))
 
     else:
         print("Argument required (getclasses, plotclasses)")

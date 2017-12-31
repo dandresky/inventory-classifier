@@ -18,19 +18,27 @@ Due to the time frames for the capstone project, the MVP will be a trained netwo
 
 # The Data
 
-The neural network wil be developed and trained on the Amazon Bin Image dataset.
-
-# Project Plan
-
 The Inventory Classifier will be developed and trained using the Amazon Bin Image Data Set.
 
 Amazon has an automated inventory management system where items are stored in random locations based on space available. As part of their open data program, they have made more than half a million images of inventory bins from one of their fulfillment centers available for research, along with JSON documents describing the contents of each of the bins that can be used to train the model on.  
 
-The image and json document below are an example of what has been provided.  
+The image and json document below are an example of what is available.  
 
 ![](img/523.jpg)
 
-![Associated JSON file](img/523.json)
+[Associated JSON file](img/523.json)
+
+### Some Statistics
+
+- There are 536,000 bin images. There is one json document for each image.
+- There are 460,512 unique item classes.
+- The following figure shows that most items show up only once or twice in all of the images.
+
+![](img/item_cnts.png)
+
+- The next figure shows the distribution of items per bin 
+
+# Project Plan
 
 My notes on the implementation details can be found in the following documents:
 - [Amazon Machine Image (AWS)](docs/aws-environment) - Setup details for the AMI I created for this project.
