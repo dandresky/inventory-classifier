@@ -30,7 +30,7 @@ The image and json document below are an example of what has been provided.
 
 ![](img/523.jpg)
 
-![Associated JSON file](data/523.json)
+![Associated JSON file](img/523.json)
 
 My notes on the implementation details can be found in the following documents:
 - [Amazon Machine Image (AWS)](docs/aws-environment) - Setup details for the AMI I created for this project.
