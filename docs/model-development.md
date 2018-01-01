@@ -8,7 +8,7 @@ I am developing a deep learning neural network to take an image with multiple ob
 - Output: A description of each item in the image (and count of total objects)
     - I can know the total number of classes by extracting the object descriptions from the supplied json files.
     - Listing [extract-classes-from-data.py](../src/extract-classes-from-data.py) extracts this information and builds a dictionary of the unique items.
-    - My first run of the script above analyzed more than 536,400 json files and discovered 460,515 unique items. The resultant dictionary has been pickled and is more than 43MB.
+    - My first run of the script above analyzed more than 536,400 json files and discovered 460,515 unique items. The resultant dictionary has been pickled and is more than 9.6MB.
 - Number of Layers:
     - ?
 - Parameter (neuron) count per layer

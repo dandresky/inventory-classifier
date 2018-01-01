@@ -30,13 +30,15 @@ The image and json document below are an example of what is available.
 
 ### Some Statistics
 
-- There are 536,000 bin images. There is one json document for each image.
-- There are 460,512 unique item classes.
+- There are 536,436 bin images and one json document for each image.
+- There are 460,512 unique item classes depicted in the images.
 - The following figure shows that most items show up only once or twice in all of the images.
 
 ![](img/item_cnts.png)
 
-- The next figure shows the distribution of items per bin 
+- The next figure shows the distribution of items per bin
+
+![](img/bin_cnts.png)
 
 # Project Plan
 
