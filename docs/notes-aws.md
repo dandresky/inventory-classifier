@@ -3,7 +3,7 @@ My random notes on Amazon EC2 offerings for reference purposes.
 ### Storage Options
 
 Amazon offers S3, EFS, and EBS as storage Options
-- S3 is suitable for persistent storage of large amounts of data
+- S3 is suitable for persistent long-term storage of large amounts of data
 - EFS is designed to provide scalable storage for EC2 instances
 - EBS was also created for EC2 - virtual disk storage
 
@@ -12,13 +12,14 @@ S3
 - Data objects (images, json, mp4, etc.) contain a header with a unique identifier (key), so access to them can be obtained through web requests
 - Slowest access of the the three storage types
 - [Cost](https://aws.amazon.com/s3/pricing/) is $0.023/month for standard and $0.0125/month for Standard-Infrequent Access
+- Not good for frequent access of data, better suited for long-term storage or archiving.
 
 EBS
 - Virtual drive for virtual EC2 instances
 - Fastest access of the three storage types
 - Stores data in blocks and organizes through a folder hierarchy similar to a traditional file system
 - Only exists in combination with one EC2 instance
-- Can't be scaled, if you need more memory you will need to buy and configure another volume
+- Can't be scaled, if you need more memory you will need to build and configure another volume (or create with image of existing volume)
 - Must be either attached to an EC2 instance or can be put in standby
 - General Purpose Volumes are backed with Solid State Drive (SSD)
     * good fit for applications that need a lot of read and write operations, like PostgreSQL, MS SQL or Oracle databases

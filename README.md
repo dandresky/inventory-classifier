@@ -14,7 +14,11 @@ Machine learning tools can be leveraged to help solve these crucial business iss
 
 ### Minimum Viable Product
 
-Due to the time frames for the capstone project, the MVP will be a trained network that can count each of the distinct items in a storage location. As time permits, I will expand the project to classify each item and ultimately identify with unique part numbers/descriptions.
+Due to the time frames for the capstone project, the MVP will be a trained network that can count each of the distinct items in a storage location.
+
+### MVP +
+
+As time permits, I will expand the project to classify items either categorically or as unique part numbers/descriptions.
 
 # The Data
 
@@ -36,7 +40,7 @@ The image and json document below are an example of what is available.
 
 ![](img/item_cnts.png)
 
-- The next figure shows the distribution of items per bin
+- The next figure shows the distribution of items on a per bin basis.
 
 ![](img/bin_cnts.png)
 
@@ -47,10 +51,16 @@ My notes on the implementation details can be found in the following documents:
 - [Data Processing](docs/data-processing) - Notes on the images and JSON files supplied and how AWS S3 and EC2 are leveraged for storage and processing.
 - [Model Development](docs/model-development.md) - Notes on my strategy for developing the neural net model architecture. Includes intermediate steps or tests that may not make it in the final model.
 
+### Technologies
+
+- Keras
+- [Python Resize Image v1.1.11](https://pypi.python.org/pypi/python-resize-image)
+- TensorFlow
+
+
 # Source Files
 
 The following is a brief overview of the source files and their use in the project.  
 
-- [extract-classes-from-data.py](src/extract-classes-from-data.py) - a script that builds a dictionary of unique classes. Initial purpose is to know how many outputs are required for the neural net.
+- [explore-data.py](src/explor-data.py) - this script is written to facilitate exploration of the data. Some functions may have value later in the project. 
 - [keras-cifar10-cnn-eval.py](src/keras-cifar10-cnn-eval.py) - a script with an example CNN architecture that classifies images from the CIFAR-10 dataset. Purpose is to test EC2 AMI's with an architecture that has a known baseline and to explore some of the Keras framework.
-- [plot-test.py](src/plot-test.py) - a script to test setup of visualization code used in the model scripts. The model scripts run for many hours and this file is just used as a testbed.
