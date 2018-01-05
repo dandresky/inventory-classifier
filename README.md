@@ -44,6 +44,12 @@ The image and json document below are an example of what is available.
 
 ![](img/bin_cnts.png)
 
+- The largest image width is 1202 pixels and the largest height is 1193 pixels
+- The smallest image width is 289 pixels and the smallest height is 192 pixels
+- There are ?? unique images size and the following figure illustrates an example distribution of 20 image sizes.
+
+![](img/size_cnts.png)
+
 # Project Plan
 
 My notes on the implementation details can be found in the following documents:
@@ -62,5 +68,5 @@ My notes on the implementation details can be found in the following documents:
 
 The following is a brief overview of the source files and their use in the project.  
 
-- [explore-data.py](src/explor-data.py) - this script is written to facilitate exploration of the data. Some functions may have value later in the project. 
+- [explore-data.py](src/explor-data.py) - this script is written to facilitate exploration of the data. Some functions may have value later in the project.
 - [keras-cifar10-cnn-eval.py](src/keras-cifar10-cnn-eval.py) - a script with an example CNN architecture that classifies images from the CIFAR-10 dataset. Purpose is to test EC2 AMI's with an architecture that has a known baseline and to explore some of the Keras framework.
