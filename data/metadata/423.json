@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00T89N8IU": {
+            "asin": "B00T89N8IU",
+            "height": {
+                "unit": "IN",
+                "value": 1.3
+            },
+            "length": {
+                "unit": "IN",
+                "value": 7.0
+            },
+            "name": "SELS LED Outdoor Flood Light 10 watts, 50W HPS Bulb Equivalent, Daylight, 6000k, Security Lights, Floodlight, Waterproof",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 1.0
+            },
+            "width": {
+                "unit": "IN",
+                "value": 5.799999999999999
+            }
+        },
+        "B00TZI3YZ6": {
+            "asin": "B00TZI3YZ6",
+            "height": {
+                "unit": "IN",
+                "value": 4.4
+            },
+            "length": {
+                "unit": "IN",
+                "value": 11.5
+            },
+            "name": "The Nutro Company Wholesome Essentials Kitten Food with Chicken and Whole Brown Rice Formula, 6.5-Pound",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 6.700000000000001
+            },
+            "width": {
+                "unit": "IN",
+                "value": 8.2
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "423.jpg"
+}

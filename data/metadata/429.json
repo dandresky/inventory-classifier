@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B013F79U78": {
+            "asin": "B013F79U78",
+            "height": {
+                "unit": "IN",
+                "value": 2.0
+            },
+            "length": {
+                "unit": "IN",
+                "value": 15.700000000000001
+            },
+            "name": "Red and Black Double Sided Infinity Zipper Pocket Scarf",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.25
+            },
+            "width": {
+                "unit": "IN",
+                "value": 7.1
+            }
+        },
+        "B016CUIHJW": {
+            "asin": "B016CUIHJW",
+            "height": {
+                "unit": "IN",
+                "value": 2.2
+            },
+            "length": {
+                "unit": "IN",
+                "value": 7.900000000000001
+            },
+            "name": "BXMAN 4-Pack 100% Cotton Men's Boxer shorts with Inside Covered Waistband(Green,L)",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 1.05
+            },
+            "width": {
+                "unit": "IN",
+                "value": 4.9
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "429.jpg"
+}

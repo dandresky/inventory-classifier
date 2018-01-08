@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00GBCKF9W": {
+            "asin": "B00GBCKF9W",
+            "height": {
+                "unit": "IN",
+                "value": 4.6
+            },
+            "length": {
+                "unit": "IN",
+                "value": 6.0
+            },
+            "name": "GNC Pro Performance Amp Recovery Vitapak Program Capsules, 30 Count",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.74
+            },
+            "width": {
+                "unit": "IN",
+                "value": 5.0
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "229.jpg"
+}

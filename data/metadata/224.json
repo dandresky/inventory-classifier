@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B0056DGKKU": {
+            "asin": "B0056DGKKU",
+            "height": {
+                "unit": "IN",
+                "value": 3.6
+            },
+            "length": {
+                "unit": "IN",
+                "value": 4.4
+            },
+            "name": "Campbell's Soup Can 60-minute Kitchen Cooking Timer - 3.25 inches",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 2.35
+            },
+            "width": {
+                "unit": "IN",
+                "value": 3.7000000000000006
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "224.jpg"
+}

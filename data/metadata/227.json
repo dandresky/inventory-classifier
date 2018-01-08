@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00I6DNPH8": {
+            "asin": "B00I6DNPH8",
+            "height": {
+                "unit": "IN",
+                "value": 4.881889763779528
+            },
+            "length": {
+                "unit": "IN",
+                "value": 11.338582677165354
+            },
+            "name": "BRAVEN BRV-X Wireless Bluetooth Speaker [Waterproof] - Gray/Red",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 3.747820201632727
+            },
+            "width": {
+                "unit": "IN",
+                "value": 7.63779527559055
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "227.jpg"
+}

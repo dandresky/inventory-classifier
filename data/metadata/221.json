@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00QUC4WV0": {
+            "asin": "B00QUC4WV0",
+            "height": {
+                "unit": "IN",
+                "value": 4.4
+            },
+            "length": {
+                "unit": "IN",
+                "value": 6.299999999999999
+            },
+            "name": "Organic Neem Leaf Powder - 1 Lb. \u2605 USDA Certified Organic \u2605 100% Pure and Natural Raw Herb Super Food Supplement. Non GMO, Gluten FREE. All Natural!",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 1.2499999999999998
+            },
+            "width": {
+                "unit": "IN",
+                "value": 4.4
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "221.jpg"
+}

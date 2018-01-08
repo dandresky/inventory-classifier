@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00OZPCBTO": {
+            "asin": "B00OZPCBTO",
+            "height": {
+                "unit": "IN",
+                "value": 4.7
+            },
+            "length": {
+                "unit": "IN",
+                "value": 5.700000000000001
+            },
+            "name": "Jensen JCR-225 Dual Alarm Projection Clock Radio JCR225",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 1.05
+            },
+            "width": {
+                "unit": "IN",
+                "value": 5.4
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "226.jpg"
+}

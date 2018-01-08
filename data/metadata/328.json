@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B0002INNU4": {
+            "asin": "B0002INNU4",
+            "height": {
+                "unit": "IN",
+                "value": 4.5
+            },
+            "length": {
+                "unit": "IN",
+                "value": 6.1000000000000005
+            },
+            "name": "Peltor Sport Shotgunner Hearing Protector, Black Neckband",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.45
+            },
+            "width": {
+                "unit": "IN",
+                "value": 5.9
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "328.jpg"
+}

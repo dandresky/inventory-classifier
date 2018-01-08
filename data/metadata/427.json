@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B00590WSDS": {
+            "asin": "B00590WSDS",
+            "height": {
+                "unit": "IN",
+                "value": 3.0
+            },
+            "length": {
+                "unit": "IN",
+                "value": 9.1
+            },
+            "name": "Intex 58894EP 18-Pocket Suntanner Lounge 74\"x28\"",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 2.7
+            },
+            "width": {
+                "unit": "IN",
+                "value": 8.099999999999998
+            }
+        },
+        "B00SWOB61I": {
+            "asin": "B00SWOB61I",
+            "height": {
+                "unit": "IN",
+                "value": 4.1
+            },
+            "length": {
+                "unit": "IN",
+                "value": 8.099999999999998
+            },
+            "name": "C&E HDMI Cable (1080p 4K 3D High Speed with Ethernet ARC) - Latest Version, 50 Feet, 2-Pack",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 4.700000000000001
+            },
+            "width": {
+                "unit": "IN",
+                "value": 7.8
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "427.jpg"
+}

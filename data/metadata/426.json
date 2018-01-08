@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B0125F5BRO": {
+            "asin": "B0125F5BRO",
+            "height": {
+                "unit": "IN",
+                "value": 3.1999999999999997
+            },
+            "length": {
+                "unit": "IN",
+                "value": 3.6
+            },
+            "name": "Madison Supply, 40 Pound Strong Neodymium Magnet Hooks, Ultra Heavy Duty Magnetic Hook (3-pack)(40 Pound)",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.15
+            },
+            "width": {
+                "unit": "IN",
+                "value": 3.3
+            }
+        },
+        "B0163CHND0": {
+            "asin": "B0163CHND0",
+            "height": {
+                "unit": "IN",
+                "value": 5.700000000000001
+            },
+            "length": {
+                "unit": "IN",
+                "value": 6.8999999999999995
+            },
+            "name": "Microsoft Band 2 - Medium",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 2.05
+            },
+            "width": {
+                "unit": "IN",
+                "value": 6.6
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "426.jpg"
+}

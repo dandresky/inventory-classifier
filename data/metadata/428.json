@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B000XJYSGA": {
+            "asin": "B000XJYSGA",
+            "height": {
+                "unit": "IN",
+                "value": 2.4
+            },
+            "length": {
+                "unit": "IN",
+                "value": 4.5
+            },
+            "name": "Douglas Labs - Ultra Joint Forte 90 Tablets",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.5291040284657967
+            },
+            "width": {
+                "unit": "IN",
+                "value": 2.5
+            }
+        },
+        "B008F0CVUO": {
+            "asin": "B008F0CVUO",
+            "height": {
+                "unit": "IN",
+                "value": 1.0
+            },
+            "length": {
+                "unit": "IN",
+                "value": 6.200000000000001
+            },
+            "name": "3 Way Co2 Gas Distribution Bar, Manifold",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.85
+            },
+            "width": {
+                "unit": "IN",
+                "value": 3.5
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "428.jpg"
+}

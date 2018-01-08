@@ -1,0 +1,48 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B0018MIY52": {
+            "asin": "B0018MIY52",
+            "height": {
+                "unit": "IN",
+                "value": 1.0
+            },
+            "length": {
+                "unit": "IN",
+                "value": 4.200000000000001
+            },
+            "name": "SEOH CLAMP HOLDER Light Alloy off-set jaws",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.20000000000000004
+            },
+            "width": {
+                "unit": "IN",
+                "value": 2.3
+            }
+        },
+        "B006H6KPC4": {
+            "asin": "B006H6KPC4",
+            "height": {
+                "unit": "IN",
+                "value": 3.1999999999999997
+            },
+            "length": {
+                "unit": "IN",
+                "value": 9.0
+            },
+            "name": "Tylenol Pain Reliever/Fever Reducer, 100 Count",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.6
+            },
+            "width": {
+                "unit": "IN",
+                "value": 5.700000000000001
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 2,
+    "image_fname": "421.jpg"
+}

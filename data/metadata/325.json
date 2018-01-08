@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B000KYQ70I": {
+            "asin": "B000KYQ70I",
+            "height": {
+                "unit": "IN",
+                "value": 8.2
+            },
+            "length": {
+                "unit": "IN",
+                "value": 8.5
+            },
+            "name": "Champion Sports Leather Medicine Ball (Yellow/White, 6 - 7 Lbs)",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 7.1
+            },
+            "width": {
+                "unit": "IN",
+                "value": 8.5
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "325.jpg"
+}

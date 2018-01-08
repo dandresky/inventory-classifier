@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B0071AQHZY": {
+            "asin": "B0071AQHZY",
+            "height": {
+                "unit": "IN",
+                "value": 1.0
+            },
+            "length": {
+                "unit": "IN",
+                "value": 1.9
+            },
+            "name": "McGill CYR11/4 Cam Yoke Roller, Unsealed, Inch, Steel, 1-1/4\" Roller Diameter, 3/4\" Roller Width, 3/8\" Inner Diameter, 13/16\" Overall Width, 0.98\" Endplate Diameter",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.25
+            },
+            "width": {
+                "unit": "IN",
+                "value": 1.6999999999999997
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "230.jpg"
+}

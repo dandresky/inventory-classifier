@@ -12,7 +12,7 @@ As an electrical engineer I have developed numerous electronic devices and partn
 
 Machine learning tools can be leveraged to help solve these crucial business issues and many more. With this project, I intend to design a deep learning neural network capable of counting and identifying inventory items in a warehouse from images of their storage locations. Armed with this capability, robotic tools and systems can be developed to automate processes allowing material and production planners to improve operations efficiency and reduce costs.
 
-### Minimum Viable Product
+### Minimum Viable Product (MVP)
 
 Due to the time frames for the capstone project, the MVP will be a trained network that can count each of the distinct items in a storage location.
 
@@ -51,6 +51,22 @@ The image and json document below are an example of what is available.
 ![](img/size_cnts.png)
 
 # Project Plan
+
+### Counting Items in a bin (MVP)
+
+
+
+### Classifying Items (MVP++)
+
+There are too many item classes and no single item class occurs frequently enough in the dataset to be able to build a CNN that can recognize the class. State of the art CNN's do reasonably well with sample sizes on the order of 500 to 1000, but the vast majority of items in the Amazon Bin Image dataset show up fewer than 20 times in the entire corpus.
+
+The first part of my strategy is to use NLP techniques to extract latent features of the item descriptions given in every json file and derive some classes that represent item categories. My goal is to discover no more than 100-200 classes with every class containing at least 1000 images to train on.
+
+The second part of my strategy is to leverage a very important property of deep learning models, and that is the ability to pretrain a model on a larger dataset, such as the Imagenet dataset, then use it to bootstrap the learning process on a smaller dataset. There are many pre-trained models publicly available for download that can be used to bootstrap learning. I might also be able to use the model I train for counting items in a bin.
+
+See this [Keras blog](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html) for an example on training a model with small datasets. Of particular interest is the strategy to "augment" the images via a number of random transformations, so that our model would never see twice the exact same picture. This helps prevent overfitting and helps the model generalize better.
+
+### Notes
 
 My notes on the implementation details can be found in the following documents:
 - [Amazon Machine Image (AWS)](docs/aws-environment) - Setup details for the AMI I created for this project.

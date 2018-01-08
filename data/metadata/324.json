@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B005FAKLMW": {
+            "asin": "B005FAKLMW",
+            "height": {
+                "unit": "IN",
+                "value": 1.9
+            },
+            "length": {
+                "unit": "IN",
+                "value": 6.8999999999999995
+            },
+            "name": "Cosmas 5560ORB Oil Rubbed Bronze Cabinet Hardware Round Knob - 1-1/4\" Diameter, 10-Pack",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 0.95
+            },
+            "width": {
+                "unit": "IN",
+                "value": 5.5
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "324.jpg"
+}

@@ -1,0 +1,27 @@
+{
+    "BIN_FCSKU_DATA": {
+        "B0033NWI2O": {
+            "asin": "B0033NWI2O",
+            "height": {
+                "unit": "IN",
+                "value": 4.8999999999999995
+            },
+            "length": {
+                "unit": "IN",
+                "value": 5.0
+            },
+            "name": "Pure Protein Body Shaping Formula Protein Powder, Rich Chocolate, 14 Ounce",
+            "quantity": 1,
+            "weight": {
+                "unit": "pounds",
+                "value": 1.15
+            },
+            "width": {
+                "unit": "IN",
+                "value": 4.8999999999999995
+            }
+        }
+    },
+    "EXPECTED_QUANTITY": 1,
+    "image_fname": "326.jpg"
+}
