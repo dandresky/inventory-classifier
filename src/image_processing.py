@@ -11,8 +11,8 @@ from skimage.transform import resize
 from sklearn.model_selection import train_test_split
 import sys
 
-IMAGE_DATA_PATH = '../data/bin-images/'
-JSON_DATA_PATH = '../data/metadata/'
+IMAGE_DATA_PATH = '../../dsi-capstone-data/data/bin-images/'
+JSON_DATA_PATH = '../../dsi-capstone-data/data/metadata/'
 
 '''
 The ImageProcessing class provides an object that analyses the raw data folders
