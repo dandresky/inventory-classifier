@@ -8,6 +8,7 @@ from os.path import isfile, join
 from PIL import Image
 import random
 from resizeimage import resizeimage
+import simplejson
 from sklearn.model_selection import train_test_split
 import sys
 
@@ -215,6 +216,14 @@ def main():
     # print(img_proc.missing_labels)
     # print(img_proc.X_train)
     # print(img_proc.y_train)
+
+    with open('../data/img_proc.txt', 'w') as f:
+        f.write("Labels:\n")
+        simplejson.dump(img_proc.labels, f)
+        f.write("\nUnique Labels:\n")
+        simplejson.dump(img_proc.unique_labels, f)
+        f.write("\nMissing Labels:\n")
+        simplejson.dump(img_proc.missing_labels, f)
 
 
 
