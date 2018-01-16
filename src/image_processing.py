@@ -26,10 +26,10 @@ to determine and store the following information:
 
 Functions:
 
-    process_next_batch()
+    process_next_training_batch()
         reads a batch of images, converts image data to arrays, and resizes
         images to a common size.
-    has_more()
+    has_more_training_data()
         returns a boolean indicating if there are more images in the training
         data set to process.
     get_datagenerators_vX()
@@ -44,7 +44,8 @@ class ImageProcessing(object):
         # self.image_path = image_path
         self.batch_size = batch_size
         self.target_size = target_size
-        self.batch_index = 0
+        self.train_index = 0
+        self.test_index = 0
         self.img_list, self.json_list = self._get_file_name_lists()
         self.num_images = len(self.img_list)
         self.labels = self._extract_labels()
@@ -53,20 +54,27 @@ class ImageProcessing(object):
         self.missing_labels = self._get_missing_labels()
         # images are resized prior to split, but no other manipulation is done
         self.X_train, self.X_test, self.y_train, self.y_test = self._get_train_test_split()
-        if self.batch_size > len(self.X_train):
-            self.batch_size = len(self.X_train)
         pass
 
-    def has_more(self):
+    def has_more_test_data(self):
         '''
         Returns True if there are more images to process.
         '''
-        if self.batch_index < len(self.X_train):
+        if self.test_index < len(self.X_test):
             return True
         else:
             return False
 
-    def process_next_batch(self):
+    def has_more_training_data(self):
+        '''
+        Returns True if there are more images to process.
+        '''
+        if self.train_index < len(self.X_train):
+            return True
+        else:
+            return False
+
+    def process_next_test_batch(self):
         '''
         This function processes a batch of images by resizing to a common size
         and converting the image to an array. It returns a list of processed
@@ -76,26 +84,61 @@ class ImageProcessing(object):
         there are more than 500k images. It is up to the calling funtion to
         decide how many images to process in one step.
         '''
-        print('\nProcessing batch index', self.batch_index, '(out of',
+        print('\nProcessing test batch index', self.test_index, '(out of',
+            len(self.X_test), 'total test images) ... ...')
+        start_time = dt.datetime.now()
+
+        # list of numpy array's representing a batch of images
+        image_batch = []
+        label_batch = []
+        for idx in range(self.batch_size):
+            if len(self.X_test) > self.test_index:
+                with open(IMAGE_DATA_PATH + self.X_test[self.test_index], 'r+b') as f:
+                    with Image.open(f) as image:
+                        resized_image = resizeimage.resize_contain(image, self.target_size)
+                        resized_image = resized_image.convert("RGB")
+                        #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
+                        X = img_to_array(resized_image).astype(int)
+                        image_batch.append(X)
+                label_batch.append(self.y_test[self.test_index])
+                self.test_index += 1
+
+        stop_time = dt.datetime.now()
+        print("Batch processing took ", (stop_time - start_time).total_seconds(), "s.\n")
+        return np.asarray(image_batch), np.asarray(label_batch)
+
+    def process_next_training_batch(self):
+        '''
+        This function processes a batch of images by resizing to a common size
+        and converting the image to an array. It returns a list of processed
+        image arrays equal to the batch_size variable. This batch size is not
+        the same as the batch size defined for the model. It is simply a limit
+        on the number of images to be processed in this function call given
+        there are more than 500k images. It is up to the calling funtion to
+        decide how many images to process in one step.
+        '''
+        print('\nProcessing training batch index', self.train_index, '(out of',
             len(self.X_train), 'total training images) ... ...')
         start_time = dt.datetime.now()
 
         # list of numpy array's representing a batch of images
         image_batch = []
+        label_batch = []
         for idx in range(self.batch_size):
-            if len(self.X_train) > self.batch_index:
-                with open(IMAGE_DATA_PATH + self.X_train[self.batch_index], 'r+b') as f:
+            if len(self.X_train) > self.train_index:
+                with open(IMAGE_DATA_PATH + self.X_train[self.train_index], 'r+b') as f:
                     with Image.open(f) as image:
                         resized_image = resizeimage.resize_contain(image, self.target_size)
                         resized_image = resized_image.convert("RGB")
-                        resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
+                        #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
                         X = img_to_array(resized_image).astype(int)
                         image_batch.append(X)
-                self.batch_index += 1
+                label_batch.append(self.y_train[self.train_index])
+                self.train_index += 1
 
         stop_time = dt.datetime.now()
         print("Batch processing took ", (stop_time - start_time).total_seconds(), "s.\n")
-        return np.asarray(image_batch)
+        return np.asarray(image_batch), np.asarray(label_batch)
 
     def get_datagenerators_v1(self):
         '''
@@ -208,29 +251,30 @@ def main():
     # below is an example of how to use the ImageProcessing processing class.
     img_proc = ImageProcessing(batch_size=9,
                                target_size=(150,150))
-    while img_proc.has_more():
-        images = img_proc.process_next_batch()
+    while img_proc.has_more_training_data():
+        images, labels = img_proc.process_next_training_batch()
         print("Images array shape = ", images.shape)
         print("Size of image batch = ", sys.getsizeof(images))
+        print(labels)
 
     # print(img_proc.unique_labels)
     # print(img_proc.missing_labels)
     # print(img_proc.X_train)
     # print(img_proc.y_train)
 
-    with open('../data/img_proc.txt', 'w') as f:
-        f.write("Labels:\n")
-        simplejson.dump(img_proc.labels, f)
-        f.write("\nUnique Labels:\n")
-        simplejson.dump(img_proc.unique_labels, f)
-        f.write("\nMissing Labels:\n")
-        simplejson.dump(img_proc.missing_labels, f)
-        f.write("\nLabel counts:\n")
-        simplejson.dump(Counter(img_proc.labels), f)
-
-    pickle.dump(img_proc.labels, open( "../data/labels.pkl", "wb" ))
-    pickle.dump(img_proc.img_list, open( "../data/image_list.pkl", "wb" ))
-    pickle.dump(img_proc.json_list, open( "../data/json_list.pkl", "wb" ))
+    # with open('../data/img_proc.txt', 'w') as f:
+    #     f.write("Labels:\n")
+    #     simplejson.dump(img_proc.labels, f)
+    #     f.write("\nUnique Labels:\n")
+    #     simplejson.dump(img_proc.unique_labels, f)
+    #     f.write("\nMissing Labels:\n")
+    #     simplejson.dump(img_proc.missing_labels, f)
+    #     f.write("\nLabel counts:\n")
+    #     simplejson.dump(Counter(img_proc.labels), f)
+    #
+    # pickle.dump(img_proc.labels, open( "../data/labels.pkl", "wb" ))
+    # pickle.dump(img_proc.img_list, open( "../data/image_list.pkl", "wb" ))
+    # pickle.dump(img_proc.json_list, open( "../data/json_list.pkl", "wb" ))
 
 
 
