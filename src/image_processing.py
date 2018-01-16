@@ -1,10 +1,13 @@
+from collections import Counter
 import datetime as dt
 import json
 from keras.preprocessing.image import ImageDataGenerator as idg
 from keras.preprocessing.image import array_to_img
 from keras.preprocessing.image import img_to_array
+import numpy as np
 from os import listdir
 from os.path import isfile, join
+import pickle
 from PIL import Image
 import random
 from resizeimage import resizeimage
@@ -37,18 +40,17 @@ Functions:
 '''
 class ImageProcessing(object):
 
-    def __init__(self, image_path, batch_size=1000, target_size=(150,150)):
-        self.image_path = image_path
+    def __init__(self, batch_size=1000, target_size=(150,150)):
+        # self.image_path = image_path
         self.batch_size = batch_size
         self.target_size = target_size
         self.batch_index = 0
         self.img_list, self.json_list = self._get_file_name_lists()
         self.num_images = len(self.img_list)
         self.labels = self._extract_labels()
-        # missing_labels and unique_labels are only used to determine number of
-        # outputs on the fully connected layer
-        self.missing_labels = self._get_missing_labels()
+        # missing_labels and unique_labels are only used to output layer structure
         self.unique_labels = self._get_unique_labels()
+        self.missing_labels = self._get_missing_labels()
         # images are resized prior to split, but no other manipulation is done
         self.X_train, self.X_test, self.y_train, self.y_test = self._get_train_test_split()
         if self.batch_size > len(self.X_train):
@@ -93,7 +95,7 @@ class ImageProcessing(object):
 
         stop_time = dt.datetime.now()
         print("Batch processing took ", (stop_time - start_time).total_seconds(), "s.\n")
-        return image_batch
+        return np.asarray(image_batch)
 
     def get_datagenerators_v1(self):
         '''
@@ -185,8 +187,8 @@ class ImageProcessing(object):
         '''
         Return the integer quantities missing from the labels
         '''
-        start, end = self.labels[0], self.labels[-1]
-        return sorted(set(range(start, end + 1)).difference(self.labels))
+        start, end = self.unique_labels[0], self.unique_labels[-1]
+        return sorted(set(range(start, end + 1)).difference(self.unique_labels))
 
     def _get_train_test_split(self):
         X_train, X_test, y_train, y_test = train_test_split(self.img_list,
@@ -204,13 +206,12 @@ class ImageProcessing(object):
 
 def main():
     # below is an example of how to use the ImageProcessing processing class.
-    img_proc = ImageProcessing(image_path='../data/bin-images',
-                               batch_size=9,
+    img_proc = ImageProcessing(batch_size=9,
                                target_size=(150,150))
     while img_proc.has_more():
         images = img_proc.process_next_batch()
+        print("Images array shape = ", images.shape)
         print("Size of image batch = ", sys.getsizeof(images))
-        print(len(images))
 
     # print(img_proc.unique_labels)
     # print(img_proc.missing_labels)
@@ -224,7 +225,12 @@ def main():
         simplejson.dump(img_proc.unique_labels, f)
         f.write("\nMissing Labels:\n")
         simplejson.dump(img_proc.missing_labels, f)
+        f.write("\nLabel counts:\n")
+        simplejson.dump(Counter(img_proc.labels), f)
 
+    pickle.dump(img_proc.labels, open( "../data/labels.pkl", "wb" ))
+    pickle.dump(img_proc.img_list, open( "../data/image_list.pkl", "wb" ))
+    pickle.dump(img_proc.json_list, open( "../data/json_list.pkl", "wb" ))
 
 
 

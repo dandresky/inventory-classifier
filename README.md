@@ -86,6 +86,7 @@ This capstone project uses the Amazon AWS Deep-Learning AMI which contains appro
 
 - [Python Resize Image v1.1.11](https://pypi.python.org/pypi/python-resize-image)
 - [scikit-image](http://scikit-image.org/docs/dev/install.html) (has a bug, not using at this time, use python-resize-image instead)
+- [simplejson](https://pypi.python.org/pypi/simplejson/) - used for development purposes to save data to a local text file
 - [sklearn](http://scikit-learn.org/stable/install.html)
 
 To install a package in a conda environment, 'source activate' the environment, then 'pip install <package name>'. Check installation with 'conda list'.  
