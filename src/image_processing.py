@@ -7,7 +7,7 @@ from os import listdir
 from os.path import isfile, join
 from PIL import Image
 import random
-from skimage.transform import resize
+from resizeimage import resizeimage
 from sklearn.model_selection import train_test_split
 import sys
 
@@ -73,24 +73,22 @@ class ImageProcessing(object):
         there are more than 500k images. It is up to the calling funtion to
         decide how many images to process in one step.
         '''
-        print('\nProcessing batch ', (self.batch_index//self.batch_size)+1, ' of ',
-            self.num_images//self.batch_size, ' ... ...')
+        print('\nProcessing batch index', self.batch_index, '(out of',
+            len(self.X_train), 'total training images) ... ...')
         start_time = dt.datetime.now()
 
         # list of numpy array's representing a batch of images
         image_batch = []
         for idx in range(self.batch_size):
-            with open(IMAGE_DATA_PATH + self.X_train[self.batch_index + idx], 'r+b') as f:
-                with Image.open(f) as image:
-                    # width, height = image.size
-                    # print('Width = ', width, ', Height = ', height)
-                    X = img_to_array(image).astype(int)
-                    # need to spec anti_aliasing=True ut current version of
-                    # skimage.transform.resize has a bug
-                    # with preserve_range=False I get numbers that are e-17
-                    new_X = resize(X, (150, 150), mode='edge', preserve_range=True)
-                    image_batch.append(new_X)
-        self.batch_index += idx + 1
+            if len(self.X_train) > self.batch_index:
+                with open(IMAGE_DATA_PATH + self.X_train[self.batch_index], 'r+b') as f:
+                    with Image.open(f) as image:
+                        resized_image = resizeimage.resize_contain(image, self.target_size)
+                        resized_image = resized_image.convert("RGB")
+                        resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
+                        X = img_to_array(resized_image).astype(int)
+                        image_batch.append(X)
+                self.batch_index += 1
 
         stop_time = dt.datetime.now()
         print("Batch processing took ", (stop_time - start_time).total_seconds(), "s.\n")
@@ -206,12 +204,12 @@ class ImageProcessing(object):
 def main():
     # below is an example of how to use the ImageProcessing processing class.
     img_proc = ImageProcessing(image_path='../data/bin-images',
-                               batch_size=10,
+                               batch_size=9,
                                target_size=(150,150))
     while img_proc.has_more():
         images = img_proc.process_next_batch()
         print("Size of image batch = ", sys.getsizeof(images))
-
+        print(len(images))
 
     # print(img_proc.unique_labels)
     # print(img_proc.missing_labels)

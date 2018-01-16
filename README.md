@@ -75,14 +75,30 @@ My notes on the implementation details can be found in the following documents:
 
 ### Technologies
 
-- Keras
-- [Python Resize Image v1.1.11](https://pypi.python.org/pypi/python-resize-image)
+The following is a list of the core technologies used for my capstone project.
+
+- keras
 - TensorFlow
+- MongoDB
+- Spark
+
+This capstone project uses the Amazon AWS Deep-Learning AMI which contains approximately a dozen pre-configured enviroments. I used the 'tensorflow_p36' environment for my project which contains the core technologies listed above. However, the environment didn't contain all of the packages needed to run my code. The following is a list of the packages I added
+
+- [Python Resize Image v1.1.11](https://pypi.python.org/pypi/python-resize-image)
+- [scikit-image](http://scikit-image.org/docs/dev/install.html) (has a bug, not using at this time, use python-resize-image instead)
+- [sklearn](http://scikit-learn.org/stable/install.html)
+
+To install a package in a conda environment, 'source activate' the environment, then 'pip install <package name>'. Check installation with 'conda list'.  
+See these sites for references on managing the conda environments
+
+- https://conda.io/docs/user-guide/tasks/manage-pkgs.html
+- https://conda.io/docs/user-guide/tasks/manage-environments.html
 
 
 # Source Files
 
 The following is a brief overview of the source files and their use in the project.  
 
-- [explore-data.py](src/explor-data.py) - this script is written to facilitate exploration of the data. Some functions may have value later in the project.
+- [explore-data.py](src/explore-data.py) - this script is written to facilitate exploration of the data. Some functions may have value later in the project.
+- [image-processing.py](src/image-processing.py) - contains ImageProcessing class that scans the data folder and returns batches of images that have been resized and converted to arrays. Also extracts labels from JSON files and provides a number of stats on the data.
 - [keras-cifar10-cnn-eval.py](src/keras-cifar10-cnn-eval.py) - a script with an example CNN architecture that classifies images from the CIFAR-10 dataset. Purpose is to test EC2 AMI's with an architecture that has a known baseline and to explore some of the Keras framework.
