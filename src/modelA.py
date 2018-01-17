@@ -16,7 +16,7 @@ from image_processing import ImageProcessing
 from sklearn.model_selection import train_test_split
 
 
-def get_model(filter_size=150, input_shape=(150,150,3)):
+def get_model(filter_size=32, input_shape=(150,150,3)):
     model = Sequential()
     model.add(Conv2D(filter_size, (3, 3), padding='same',
                      input_shape=input_shape))
@@ -52,9 +52,10 @@ def get_model(filter_size=150, input_shape=(150,150,3)):
 
 def main():
     img_proc = ImageProcessing(batch_size=10,
-                               target_size=(150,150))
+                               target_size=(150,150),
+                               qty_limit=None)
     # create model
-    model = get_model(150, (150,150,3))
+    model = get_model(32, (150,150,3))
     # This will do preprocessing and realtime data augmentation:
     train_datagen, val_datagen = img_proc.get_datagenerators_v1()
 
@@ -79,7 +80,7 @@ def main():
         model.fit_generator(train_datagen.flow(train_images, train_labels,
                                          batch_size=batch_size),
                             verbose=True,
-                            epochs=1,
+                            epochs=3,
                             steps_per_epoch=1,
                             workers=4)
 

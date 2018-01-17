@@ -40,27 +40,37 @@ Functions:
 '''
 class ImageProcessing(object):
 
-    def __init__(self, batch_size=1000, target_size=(150,150)):
+    def __init__(self, batch_size=1000, target_size=(150,150), qty_limit=None):
         # self.image_path = image_path
         self.batch_size = batch_size
         self.target_size = target_size
+        self.qty_limit = qty_limit
         self.train_index = 0
         self.test_index = 0
-        self.img_list, self.json_list = self._get_file_name_lists()
-        self.num_images = len(self.img_list)
+        # get an array of image and json file names, randomly shuffled with
+        # outliers filtered out.
+        self.image_files, self.json_files = self._get_file_name_lists()
+        self.num_images = len(self.image_files)
+        # get an array of labels in the same shuffled order as the image and
+        # json files with outliers removed
         self.labels = self._extract_labels()
-        # missing_labels and unique_labels are only used to output layer structure
+        # missing_labels and unique_labels are only used to understand output
+        # layer structure of the neural network
         self.unique_labels = self._get_unique_labels()
         self.missing_labels = self._get_missing_labels()
-        # images are resized prior to split, but no other manipulation is done
-        self.X_train, self.X_test, self.y_train, self.y_test = self._get_train_test_split()
+        # split the data into train and test before any processing
+        self.train_img, self.test_img, self.train_lbl, self.test_lbl = \
+            train_test_split(self.image_files,
+                             self.labels,
+                             test_size=0.20,
+                             random_state=42)
         pass
 
     def has_more_test_data(self):
         '''
         Returns True if there are more images to process.
         '''
-        if self.test_index < len(self.X_test):
+        if self.test_index < len(self.test_img):
             return True
         else:
             return False
@@ -69,7 +79,7 @@ class ImageProcessing(object):
         '''
         Returns True if there are more images to process.
         '''
-        if self.train_index < len(self.X_train):
+        if self.train_index < len(self.train_img):
             return True
         else:
             return False
@@ -85,22 +95,22 @@ class ImageProcessing(object):
         decide how many images to process in one step.
         '''
         print('\nProcessing test batch index', self.test_index, '(out of',
-            len(self.X_test), 'total test images) ... ...')
+            len(self.test_img), 'total test images) ... ...')
         start_time = dt.datetime.now()
 
         # list of numpy array's representing a batch of images
         image_batch = []
         label_batch = []
         for idx in range(self.batch_size):
-            if len(self.X_test) > self.test_index:
-                with open(IMAGE_DATA_PATH + self.X_test[self.test_index], 'r+b') as f:
+            if len(self.test_img) > self.test_index:
+                with open(IMAGE_DATA_PATH + self.test_img[self.test_index], 'r+b') as f:
                     with Image.open(f) as image:
                         resized_image = resizeimage.resize_contain(image, self.target_size)
                         resized_image = resized_image.convert("RGB")
                         #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
                         X = img_to_array(resized_image).astype(int)
                         image_batch.append(X)
-                label_batch.append(self.y_test[self.test_index])
+                label_batch.append(self.test_lbl[self.test_index])
                 self.test_index += 1
 
         stop_time = dt.datetime.now()
@@ -110,7 +120,7 @@ class ImageProcessing(object):
     def process_next_training_batch(self):
         '''
         This function processes a batch of images by resizing to a common size
-        and converting the image to an array. It returns a list of processed
+        and converting the image to an array. It returns an array of processed
         image arrays equal to the batch_size variable. This batch size is not
         the same as the batch size defined for the model. It is simply a limit
         on the number of images to be processed in this function call given
@@ -118,22 +128,22 @@ class ImageProcessing(object):
         decide how many images to process in one step.
         '''
         print('\nProcessing training batch index', self.train_index, '(out of',
-            len(self.X_train), 'total training images) ... ...')
+            len(self.train_img), 'total training images) ... ...')
         start_time = dt.datetime.now()
 
         # list of numpy array's representing a batch of images
         image_batch = []
         label_batch = []
         for idx in range(self.batch_size):
-            if len(self.X_train) > self.train_index:
-                with open(IMAGE_DATA_PATH + self.X_train[self.train_index], 'r+b') as f:
+            if len(self.train_img) > self.train_index:
+                with open(IMAGE_DATA_PATH + self.train_img[self.train_index], 'r+b') as f:
                     with Image.open(f) as image:
                         resized_image = resizeimage.resize_contain(image, self.target_size)
                         resized_image = resized_image.convert("RGB")
                         #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
-                        X = img_to_array(resized_image).astype(int)
+                        X = img_to_array(resized_image).astype(np.uint8)
                         image_batch.append(X)
-                label_batch.append(self.y_train[self.train_index])
+                label_batch.append(self.train_lbl[self.train_index])
                 self.train_index += 1
 
         stop_time = dt.datetime.now()
@@ -198,16 +208,14 @@ class ImageProcessing(object):
         print("\nExtracting bin quantity labels for each image ... ...")
         start_time = dt.datetime.now()
         labels = []
-        for idx, filename in enumerate(self.json_list):
+        for idx, filename in enumerate(self.json_files):
             with open(JSON_DATA_PATH + filename) as f:
                 json_data = json.load(f)
                 qty = json_data['EXPECTED_QUANTITY']
-                if qty > 10:
-                    print(filename, " has a qty of ", qty)
                 labels.append(qty)
         stop_time = dt.datetime.now()
         print("Extracting took ", (stop_time - start_time).total_seconds(), "s.\n")
-        return labels
+        return np.array(labels).astype(np.uint8)
 
     def _get_file_name_lists(self):
         '''
@@ -221,6 +229,19 @@ class ImageProcessing(object):
         # get list of all json files and sort by file name
         json_file_list = [f for f in listdir(JSON_DATA_PATH) if isfile(join(JSON_DATA_PATH, f))]
         json_file_list.sort()
+
+        # some images contain too many items to count. qty_limit allows
+        # to filter out json and image files where EXPECTED_QUANTITY
+        # exceeds a certain threshold
+        if self.qty_limit:
+            for idx, filename in enumerate(self.json_files):
+                with open(JSON_DATA_PATH + filename) as f:
+                    json_data = json.load(f)
+                    qty = json_data['EXPECTED_QUANTITY'].astype(np.uint8)
+                    if qty > self.qty_limit:
+                        img_file_list.pop(idx)
+                        json_file_list.pop(idx)
+
         # randomly shuffle the image list and make json list consistent
         new_list = list(zip(img_file_list, json_file_list))
         random.shuffle(new_list)
@@ -236,11 +257,6 @@ class ImageProcessing(object):
         start, end = self.unique_labels[0], self.unique_labels[-1]
         return sorted(set(range(start, end + 1)).difference(self.unique_labels))
 
-    def _get_train_test_split(self):
-        X_train, X_test, y_train, y_test = train_test_split(self.img_list,
-            self.labels, test_size=0.20, random_state=42)
-        return X_train, X_test, y_train, y_test
-
     def _get_unique_labels(self):
         '''
         Return a sorted list of unique labels
@@ -252,8 +268,9 @@ class ImageProcessing(object):
 
 def main():
     # below is an example of how to use the ImageProcessing processing class.
-    img_proc = ImageProcessing(batch_size=1000,
-                               target_size=(150,150))
+    img_proc = ImageProcessing(batch_size=10,
+                               target_size=(150,150),
+                               qty_limit=None)
     while img_proc.has_more_training_data():
         images, labels = img_proc.process_next_training_batch()
         print("Images array shape = ", images.shape)
@@ -265,19 +282,19 @@ def main():
     # print(img_proc.X_train)
     # print(img_proc.y_train)
 
-    with open('../data/img_proc.txt', 'w') as f:
-        f.write("Labels:\n")
-        simplejson.dump(img_proc.labels, f)
-        f.write("\nUnique Labels:\n")
-        simplejson.dump(img_proc.unique_labels, f)
-        f.write("\nMissing Labels:\n")
-        simplejson.dump(img_proc.missing_labels, f)
-        f.write("\nLabel counts:\n")
-        simplejson.dump(Counter(img_proc.labels), f)
-
-    pickle.dump(img_proc.labels, open( "../data/labels.pkl", "wb" ))
-    pickle.dump(img_proc.img_list, open( "../data/image_list.pkl", "wb" ))
-    pickle.dump(img_proc.json_list, open( "../data/json_list.pkl", "wb" ))
+    # with open('../data/img_proc.txt', 'w') as f:
+    #     f.write("Labels:\n")
+    #     simplejson.dump(img_proc.labels, f)
+    #     f.write("\nUnique Labels:\n")
+    #     simplejson.dump(img_proc.unique_labels, f)
+    #     f.write("\nMissing Labels:\n")
+    #     simplejson.dump(img_proc.missing_labels, f)
+    #     f.write("\nLabel counts:\n")
+    #     simplejson.dump(Counter(img_proc.labels), f)
+    #
+    # pickle.dump(img_proc.labels, open( "../data/labels.pkl", "wb" ))
+    # pickle.dump(img_proc.image_files, open( "../data/image_list.pkl", "wb" ))
+    # pickle.dump(img_proc.json_files, open( "../data/json_files.pkl", "wb" ))
 
 
 
