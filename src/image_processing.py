@@ -201,7 +201,10 @@ class ImageProcessing(object):
         for idx, filename in enumerate(self.json_list):
             with open(JSON_DATA_PATH + filename) as f:
                 json_data = json.load(f)
-                labels.append(json_data['EXPECTED_QUANTITY'])
+                qty = json_data['EXPECTED_QUANTITY']
+                if qty > 10:
+                    print(filename, " has a qty of ", qty)
+                labels.append(qty)
         stop_time = dt.datetime.now()
         print("Extracting took ", (stop_time - start_time).total_seconds(), "s.\n")
         return labels
@@ -249,7 +252,7 @@ class ImageProcessing(object):
 
 def main():
     # below is an example of how to use the ImageProcessing processing class.
-    img_proc = ImageProcessing(batch_size=9,
+    img_proc = ImageProcessing(batch_size=1000,
                                target_size=(150,150))
     while img_proc.has_more_training_data():
         images, labels = img_proc.process_next_training_batch()
@@ -262,19 +265,19 @@ def main():
     # print(img_proc.X_train)
     # print(img_proc.y_train)
 
-    # with open('../data/img_proc.txt', 'w') as f:
-    #     f.write("Labels:\n")
-    #     simplejson.dump(img_proc.labels, f)
-    #     f.write("\nUnique Labels:\n")
-    #     simplejson.dump(img_proc.unique_labels, f)
-    #     f.write("\nMissing Labels:\n")
-    #     simplejson.dump(img_proc.missing_labels, f)
-    #     f.write("\nLabel counts:\n")
-    #     simplejson.dump(Counter(img_proc.labels), f)
-    #
-    # pickle.dump(img_proc.labels, open( "../data/labels.pkl", "wb" ))
-    # pickle.dump(img_proc.img_list, open( "../data/image_list.pkl", "wb" ))
-    # pickle.dump(img_proc.json_list, open( "../data/json_list.pkl", "wb" ))
+    with open('../data/img_proc.txt', 'w') as f:
+        f.write("Labels:\n")
+        simplejson.dump(img_proc.labels, f)
+        f.write("\nUnique Labels:\n")
+        simplejson.dump(img_proc.unique_labels, f)
+        f.write("\nMissing Labels:\n")
+        simplejson.dump(img_proc.missing_labels, f)
+        f.write("\nLabel counts:\n")
+        simplejson.dump(Counter(img_proc.labels), f)
+
+    pickle.dump(img_proc.labels, open( "../data/labels.pkl", "wb" ))
+    pickle.dump(img_proc.img_list, open( "../data/image_list.pkl", "wb" ))
+    pickle.dump(img_proc.json_list, open( "../data/json_list.pkl", "wb" ))
 
 
 
