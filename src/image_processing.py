@@ -166,7 +166,7 @@ class ImageProcessing(object):
         print("Size of training labels numpy array = ", sys.getsizeof(self.train_lbl))
         np.save('../../dsi-capstone-data/training_labels.npy', self.train_lbl)
         print("Size of test labels numpy array = ", sys.getsizeof(self.test_lbl))
-        np.save('../../dsi-capstone-data/training_labels.npy', self.test_lbl)
+        np.save('../../dsi-capstone-data/test_labels.npy', self.test_lbl)
 
         stop_time = dt.datetime.now()
         print("Saving arrays took ", (stop_time - start_time).total_seconds(), "s.\n")

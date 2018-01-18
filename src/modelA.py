@@ -13,7 +13,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from image_processing import ImageProcessing
-from sklearn.model_selection import train_test_split
+import numpy as np
 
 
 def get_model(filter_size=32, input_shape=(150,150,3)):
@@ -51,9 +51,10 @@ def get_model(filter_size=32, input_shape=(150,150,3)):
 
 
 def main():
-    img_proc = ImageProcessing(batch_size=10,
-                               target_size=(150,150),
-                               qty_limit=None)
+    X_train = np.load('../../dsi-capstone-data/processed_training_images.npy')
+    X_test = np.load('../../dsi-capstone-data/processed_test_images.npy')
+    y_train = np.load('../../dsi-capstone-data/training_labels.npy')
+    y_test = np.load('../../dsi-capstone-data/test_labels.npy')
     # create model
     model = get_model(32, (150,150,3))
     # This will do preprocessing and realtime data augmentation:
