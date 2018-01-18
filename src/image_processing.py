@@ -40,16 +40,16 @@ Functions:
 '''
 class ImageProcessing(object):
 
-    def __init__(self, batch_size=1000, target_size=(150,150), qty_limit=None):
+    def __init__(self, batch_size=1000, target_size=(150,150), max_qty=None):
         # self.image_path = image_path
         self.batch_size = batch_size
         self.target_size = target_size
-        self.qty_limit = qty_limit
+        self.max_qty = max_qty
         self.train_index = 0
         self.test_index = 0
         # get an array of image and json file names, randomly shuffled with
         # outliers filtered out.
-        self.image_files, self.json_files = self._get_file_name_lists()
+        self.image_files, self.json_files = self._get_file_name_arrays()
         self.num_images = len(self.image_files)
         # get an array of labels in the same shuffled order as the image and
         # json files with outliers removed
@@ -59,11 +59,11 @@ class ImageProcessing(object):
         self.unique_labels = self._get_unique_labels()
         self.missing_labels = self._get_missing_labels()
         # split the data into train and test before any processing
-        self.train_img, self.test_img, self.train_lbl, self.test_lbl = \
-            train_test_split(self.image_files,
-                             self.labels,
-                             test_size=0.20,
-                             random_state=42)
+        # self.train_img, self.test_img, self.train_lbl, self.test_lbl = \
+        #     train_test_split(self.image_files,
+        #                      self.labels,
+        #                      test_size=0.20,
+        #                      random_state=42)
         pass
 
     def has_more_test_data(self):
@@ -83,6 +83,95 @@ class ImageProcessing(object):
             return True
         else:
             return False
+
+    def pre_process_images(self):
+        '''
+        Pre-process all images and save data as numpy arrays to disk. This is
+        alternative method to batch processing in first version. This is called
+        once from the console, then the model accesses the saved numpy arrays
+        for training and test.
+        '''
+        # filter out the image files, json files, and labels that exceed the
+        # maximum quantity. This is to strip out the the outliers (bin
+        # quanities that are too large to detect)
+        if self.max_qty:
+            mask = np.where(self.labels <= self.max_qty)
+            self.image_files = self.image_files[mask]
+            self.json_files = self.json_files[mask]
+            self.labels = self.labels[mask]
+
+        # create the train test split
+        self.train_img, self.test_img, self.train_lbl, self.test_lbl = \
+            train_test_split(self.image_files,
+                             self.labels,
+                             test_size=0.20,
+                             random_state=39)
+
+        # create the processed training image array. Pixel values saved are
+        # uint8 to save space. Normalization needs to be done in the model.
+        print('\nPre-processing training images ... ...')
+        start_time = dt.datetime.now()
+
+        depth = 3
+        arr = np.zeros((len(self.train_img), self.target_size[0], self.target_size[1], depth), dtype=np.uint8)
+        for idx, img in enumerate(self.train_img):
+            with open(IMAGE_DATA_PATH + img, 'r+b') as f:
+                with Image.open(f) as image:
+                    resized_image = resizeimage.resize_contain(image, self.target_size)
+                    resized_image = resized_image.convert("RGB")
+                    #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
+                    X = img_to_array(resized_image).astype(np.uint8)
+                    arr[idx] = X
+        stop_time = dt.datetime.now()
+        print("Pre-processing of training images took ", (stop_time - start_time).total_seconds(), "s.\n")
+
+        print('\nSaving the processed training images array ... ...')
+        start_time = dt.datetime.now()
+
+        print("Size of numpy array = ", sys.getsizeof(arr))
+        np.save('../../dsi-capstone-data/processed_training_images.npy', arr)
+
+        stop_time = dt.datetime.now()
+        print("Saving processed array took ", (stop_time - start_time).total_seconds(), "s.\n")
+
+        # create the processed test image array. Pixel values saved are
+        # uint8 to save space. Normalization needs to be done in the model?
+        print('\nPre-processing test images ... ...')
+        start_time = dt.datetime.now()
+        depth = 3
+        arr = np.zeros((len(self.test_img), self.target_size[0], self.target_size[1], depth), dtype=np.uint8)
+        for idx, img in enumerate(self.test_img):
+            with open(IMAGE_DATA_PATH + img, 'r+b') as f:
+                with Image.open(f) as image:
+                    resized_image = resizeimage.resize_contain(image, self.target_size)
+                    resized_image = resized_image.convert("RGB")
+                    #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
+                    X = img_to_array(resized_image).astype(np.uint8)
+                    arr[idx] = X
+        stop_time = dt.datetime.now()
+        print("Pre-processing took ", (stop_time - start_time).total_seconds(), "s.\n")
+
+        print('\nSaving the processed test images array ... ...')
+        start_time = dt.datetime.now()
+
+        print("Size of numpy array = ", sys.getsizeof(arr))
+        np.save('../../dsi-capstone-data/processed_test_images.npy', arr)
+
+        stop_time = dt.datetime.now()
+        print("Saving array took ", (stop_time - start_time).total_seconds(), "s.\n")
+
+        print('\nSaving the train/test label arrays ... ...')
+        start_time = dt.datetime.now()
+
+        print("Size of training labels numpy array = ", sys.getsizeof(self.train_lbl))
+        np.save('../../dsi-capstone-data/training_labels.npy', self.train_lbl)
+        print("Size of test labels numpy array = ", sys.getsizeof(self.test_lbl))
+        np.save('../../dsi-capstone-data/training_labels.npy', self.test_lbl)
+
+        stop_time = dt.datetime.now()
+        print("Saving arrays took ", (stop_time - start_time).total_seconds(), "s.\n")
+
+        pass
 
     def process_next_test_batch(self):
         '''
@@ -217,9 +306,10 @@ class ImageProcessing(object):
         print("Extracting took ", (stop_time - start_time).total_seconds(), "s.\n")
         return np.array(labels).astype(np.uint8)
 
-    def _get_file_name_lists(self):
+    def _get_file_name_arrays(self):
         '''
-        Return a list of image file names and JSON file names, randomly shuffled
+        Return arrays of image file names and JSON file names, randomly
+        shuffled but maintaining consistent order between the two
         '''
         print("\nScanning and shuffling image and json files and ... ...")
         start_time = dt.datetime.now()
@@ -230,25 +320,13 @@ class ImageProcessing(object):
         json_file_list = [f for f in listdir(JSON_DATA_PATH) if isfile(join(JSON_DATA_PATH, f))]
         json_file_list.sort()
 
-        # some images contain too many items to count. qty_limit allows
-        # to filter out json and image files where EXPECTED_QUANTITY
-        # exceeds a certain threshold
-        if self.qty_limit:
-            for idx, filename in enumerate(self.json_files):
-                with open(JSON_DATA_PATH + filename) as f:
-                    json_data = json.load(f)
-                    qty = json_data['EXPECTED_QUANTITY'].astype(np.uint8)
-                    if qty > self.qty_limit:
-                        img_file_list.pop(idx)
-                        json_file_list.pop(idx)
-
         # randomly shuffle the image list and make json list consistent
         new_list = list(zip(img_file_list, json_file_list))
         random.shuffle(new_list)
         img_file_list, json_file_list = zip(*new_list)
         stop_time = dt.datetime.now()
         print("Scanning and shuffling took ", (stop_time - start_time).total_seconds(), "s.\n")
-        return img_file_list, json_file_list
+        return np.array(img_file_list), np.array(json_file_list)
 
     def _get_missing_labels(self):
         '''
@@ -268,14 +346,20 @@ class ImageProcessing(object):
 
 def main():
     # below is an example of how to use the ImageProcessing processing class.
+    # img_proc = ImageProcessing(batch_size=10,
+    #                            target_size=(150,150),
+    #                            qty_limit=None)
+    # while img_proc.has_more_training_data():
+    #     images, labels = img_proc.process_next_training_batch()
+    #     print("Images array shape = ", images.shape)
+    #     print("Size of image batch = ", sys.getsizeof(images))
+    #     print(labels)
+
+    random.seed(39)
     img_proc = ImageProcessing(batch_size=10,
                                target_size=(150,150),
-                               qty_limit=None)
-    while img_proc.has_more_training_data():
-        images, labels = img_proc.process_next_training_batch()
-        print("Images array shape = ", images.shape)
-        print("Size of image batch = ", sys.getsizeof(images))
-        print(labels)
+                               max_qty=2)
+    img_proc.pre_process_images()
 
     # print(img_proc.unique_labels)
     # print(img_proc.missing_labels)
