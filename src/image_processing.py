@@ -80,8 +80,8 @@ class ImageProcessing(object):
                     #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
                     X = img_to_array(resized_image).astype(np.uint8)
                     arr[idx] = X
-            if idx % 1000 == 0:
-                print(idx, "out of", len(train_img), "training images have been processed")
+            if (idx + 1) % 1000 == 0:
+                print(idx+1, "out of", len(train_img), "training images have been processed")
         stop_time = dt.datetime.now()
         print("Pre-processing of training images took ", (stop_time - start_time).total_seconds(), "s.\n")
 
@@ -108,8 +108,8 @@ class ImageProcessing(object):
                     #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
                     X = img_to_array(resized_image).astype(np.uint8)
                     arr[idx] = X
-            if idx % 1000 == 0:
-                print(idx, "out of", len(train_img), "test images have been processed")
+            if (idx + 1) % 1000 == 0:
+                print(idx+1, "out of", len(test_img), "test images have been processed")
         stop_time = dt.datetime.now()
         print("Pre-processing took ", (stop_time - start_time).total_seconds(), "s.\n")
 
