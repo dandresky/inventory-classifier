@@ -6,6 +6,7 @@ learning model I intend to use.
 
 Model A uses a single output layer with a RELU activation function.
 '''
+import datetime as dt
 import keras
 from keras import losses
 from keras import metrics
@@ -14,6 +15,7 @@ from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator as idg
 import numpy as np
+from sklearn.metrics import mean_squared_error
 
 def get_datagenerators_v1():
     '''
@@ -98,13 +100,17 @@ def get_model(filter_size=32, input_shape=(150,150,3)):
 
 def main():
     # get pre-processed image and label data
+    print('\nLoading numpy arrays ... ...')
+    start_time = dt.datetime.now()
     X_train = np.load('../../dsi-capstone-data/processed_training_images.npy')
     X_test = np.load('../../dsi-capstone-data/processed_test_images.npy')
     y_train = np.load('../../dsi-capstone-data/training_labels.npy')
     y_test = np.load('../../dsi-capstone-data/test_labels.npy')
+    stop_time = dt.datetime.now()
+    print("Loading arrays took ", (stop_time - start_time).total_seconds(), "s.\n")
 
     # create model
-    model = get_model(32, (150,150,3))
+    model = get_model(filter_size=32, input_shape=(150,150,3))
 
     # data generators are instructions to Keras for further processing of the
     # image data (in batches) before training on the image.
@@ -118,18 +124,26 @@ def main():
     batch_size = 10
     model.fit_generator(train_datagen.flow(X_train, y_train, batch_size=batch_size),
                         verbose=True,
-                        epochs=10,
+                        epochs=4,
                         steps_per_epoch=(len(X_train)/batch_size),
                         workers=4)
 
     # Score trained model.
-    score = model.evaluate(X_train, y_train,
+    score = model.evaluate(X_test, y_test,
                            batch_size=batch_size,
                            verbose=True,
                            sample_weight=None)
     print('Test loss:', score[0])
     print('Test accuracy:', score[1])
 
+    # make predictions and compare to actual
+    pred = model.predict(X_test,
+                         batch_size=batch_size,
+                         verbose=True)
+    print("Predictions:\n", pred)
+    print("Actuals:\n", y_test)
+    mse = mean_squared_error(pred, y_test)
+    print("The MSE of the predicted quantities is", mse)
     pass
 
 
