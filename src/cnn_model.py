@@ -130,8 +130,8 @@ def train_top_model(X_train, y_train, y_test):
     model = get_top_model(bottleneck_features_train.shape[1:])
 
     model.fit(bottleneck_features_train, y_train,
-              epochs=50,
-              batch_size=32,
+              epochs=5,
+              batch_size=10,
               validation_data=(bottleneck_features_test, y_test))
 
     model.save_weights('../../dsi-capstone-data/top_model_weights.h5')

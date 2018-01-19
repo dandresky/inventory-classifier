@@ -64,6 +64,12 @@ class ImageProcessing(object):
                              test_size=0.20,
                              random_state=39)
 
+        # manually inspect small data set to ensure labels 
+        # print(train_img)
+        # print(train_lbl)
+        # print(test_img)
+        # print(test_lbl)
+
         # create the processed training image array. Pixel values saved are
         # uint8 to save space. Normalization needs to be done in the model.
         print('\nPre-processing training images ... ...')
@@ -188,8 +194,6 @@ class ImageProcessing(object):
         Return a sorted list of unique labels
         '''
         return list(sorted(set(self.labels)))
-
-'''packet_write_wait: Connection to 34.224.101.31 port 22: Broken pipe'''
 
 
 def main():
