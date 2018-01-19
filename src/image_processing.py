@@ -30,11 +30,10 @@ class ImageProcessing(object):
         # self.image_path = image_path
         self.target_size = target_size
         self.max_qty = max_qty
-        # get an array of image and json file names, randomly shuffled with
-        # outliers filtered out.
+        # get an array of image and json file names, randomly shuffled
         self.image_files, self.json_files = self._get_file_name_arrays()
         # get an array of labels in the same shuffled order as the image and
-        # json files with outliers removed
+        # json files
         self.labels = self._extract_labels()
         # missing_labels and unique_labels are only used to understand output
         # layer structure of the neural network
