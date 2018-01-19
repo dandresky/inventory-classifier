@@ -65,50 +65,22 @@ def get_datagenerators_v1():
         data_format='channels_last')                # default
     return train_generator, test_generator
 
-def get_model(filter_size=32, input_shape=(150,150,3)):
+def get_top_model(input_shape=(224,224,3)):
+
     model = Sequential()
-    model.add(Conv2D(filter_size, (3, 3), padding='same',
-                     input_shape=input_shape))
-    model.add(Activation('relu'))
-    model.add(Conv2D(filter_size, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
-
-    model.add(Conv2D(2*filter_size, (3, 3), padding='same'))
-    model.add(Activation('relu'))
-    model.add(Conv2D(2*filter_size, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
-
-    model.add(Flatten())
-    model.add(Dense(512))
-    model.add(Activation('relu'))
+    model.add(Flatten(input_shape=input_shape))
+    model.add(Dense(256, activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(1))
-    model.add(Activation('relu'))
+    model.add(Dense(1, activation='relu'))
 
-    # initiate RMSprop optimizer
     opt = keras.optimizers.SGD(lr=0.01, momentum=0.0, decay=0.0, nesterov=False)
-
-    # Let's train the model using RMSprop
-    model.compile(loss=losses.mean_squared_error,
-                  optimizer=opt,
+    model.compile(optimizer=opt,
+                  loss=losses.mean_squared_error,
                   metrics=[metrics.mae])
+
     return model
 
-
-def main():
-    # get pre-processed image and label data
-    print('\nLoading numpy arrays ... ...')
-    start_time = dt.datetime.now()
-    X_train = np.load('../../dsi-capstone-data/processed_training_images.npy')
-    X_test = np.load('../../dsi-capstone-data/processed_test_images.npy')
-    y_train = np.load('../../dsi-capstone-data/training_labels.npy')
-    y_test = np.load('../../dsi-capstone-data/test_labels.npy')
-    stop_time = dt.datetime.now()
-    print("Loading arrays took ", (stop_time - start_time).total_seconds(), "s.\n")
+def save_bottlebeck_features(X_train, y_train, X_test, y_test):
 
     batch_size = 10
 
@@ -121,13 +93,13 @@ def main():
     test_datagen.fit(X_test)
     train_generator = train_datagen.flow(
         X_train,
-        y_train,
+        y_train,    # labels just get passed through
         batch_size=batch_size,
         shuffle=False,
         seed=None)
     test_generator = test_datagen.flow(
         X_test,
-        y_test,
+        y_test, # labels just get passed through
         batch_size=batch_size,
         shuffle=False,
         seed=None)
@@ -141,13 +113,46 @@ def main():
     # top of the stored features for computational efficiency.
     bottleneck_features_train = model.predict_generator(
         train_generator, X_train.shape[0] // batch_size)
-    np.save(open('../../dsi-capstone-data/bottleneck_features_train.npy', 'w'),
+    np.save('../../dsi-capstone-data/bottleneck_features_train.npy',
             bottleneck_features_train)
 
     bottleneck_features_test = model.predict_generator(
         test_generator, X_test.shape[0] // batch_size)
-    np.save(open('../../dsi-capstone-data/bottleneck_features_validation.npy', 'w'),
+    np.save('../../dsi-capstone-data/bottleneck_features_test.npy',
             bottleneck_features_test)
+    pass
+
+def train_top_model(X_train, y_train, y_test):
+
+    bottleneck_features_train = np.load('../../dsi-capstone-data/bottleneck_features_train.npy')
+    bottleneck_features_test = np.load('../../dsi-capstone-data/bottleneck_features_test.npy')
+
+    model = get_top_model(bottleneck_features_train.shape[1:])
+
+    model.fit(bottleneck_features_train, y_train,
+              epochs=50,
+              batch_size=32,
+              validation_data=(bottleneck_features_test, y_test))
+
+    model.save_weights('../../dsi-capstone-data/top_model_weights.h5')
+
+
+def main():
+    # get pre-processed image and label data
+    print('\nLoading numpy arrays ... ...')
+    start_time = dt.datetime.now()
+    X_train = np.load('../../dsi-capstone-data/processed_training_images.npy')
+    X_test = np.load('../../dsi-capstone-data/processed_test_images.npy')
+    y_train = np.load('../../dsi-capstone-data/training_labels.npy')
+    y_test = np.load('../../dsi-capstone-data/test_labels.npy')
+    stop_time = dt.datetime.now()
+    print("Loading arrays took ", (stop_time - start_time).total_seconds(), "s.\n")
+
+    save_bottlebeck_features(X_train, y_train, X_test, y_test)
+
+    train_top_model(X_train, y_train, y_test)
+
+
 
 
 

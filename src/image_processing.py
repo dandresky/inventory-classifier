@@ -194,7 +194,7 @@ class ImageProcessing(object):
 
 def main():
     random.seed(39)
-    img_proc = ImageProcessing(target_size=(150,150), max_qty=2)
+    img_proc = ImageProcessing(target_size=(224,224), max_qty=2)
     img_proc.pre_process_images()
 
 
