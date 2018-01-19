@@ -84,6 +84,13 @@ def save_bottlebeck_features(X_train, y_train, X_test, y_test):
 
     batch_size = 10
 
+    start_time = dt.datetime.now()
+    print('\nComputing train and test bottleneck features ... ...')
+    print('\nCreating data generators ... ...')
+    print("X_train length = ", len(X_train))
+    print("y_train length = ", len(y_train))
+    print("X_test length = ", len(X_test))
+    print("y_test length = ", len(y_test))
     # data generators are instructions to Keras for further processing of the
     # image data (in batches) before training on the image.
     train_datagen, test_datagen = get_datagenerators_v1()
@@ -104,6 +111,7 @@ def save_bottlebeck_features(X_train, y_train, X_test, y_test):
         shuffle=False,
         seed=None)
 
+    print('\nLoading VGG16 model ... ...')
     model = applications.VGG16(include_top=False, weights='imagenet')
 
     # Generate bottleneck data. This is obtained by running the model on the
@@ -111,30 +119,51 @@ def save_bottlebeck_features(X_train, y_train, X_test, y_test):
     # maps before the fully-connected layers) into separate numpy arrays.
     # This data will be used to train and validate a fully-connected model on
     # top of the stored features for computational efficiency.
+    print('\nRunning train predictor and saving features ... ...')
     bottleneck_features_train = model.predict_generator(
         train_generator, X_train.shape[0] // batch_size)
     np.save('../../dsi-capstone-data/bottleneck_features_train.npy',
             bottleneck_features_train)
+    print("Train bottleneck feature length = ", len(bottleneck_features_train))
 
+    print('\nRunning test predictor and saving features ... ...')
     bottleneck_features_test = model.predict_generator(
         test_generator, X_test.shape[0] // batch_size)
     np.save('../../dsi-capstone-data/bottleneck_features_test.npy',
             bottleneck_features_test)
+    print("Test bottleneck feature length = ", len(bottleneck_features_train))
+
+    stop_time = dt.datetime.now()
+    print("Computing bottleneck features took ",
+        (stop_time - start_time).total_seconds(), "s.\n")
     pass
 
 def train_top_model(X_train, y_train, y_test):
 
+    start_time = dt.datetime.now()
+    print('\nTraining top model ... ...')
+    print('\nLoading bottleneck features ... ...')
     bottleneck_features_train = np.load('../../dsi-capstone-data/bottleneck_features_train.npy')
     bottleneck_features_test = np.load('../../dsi-capstone-data/bottleneck_features_test.npy')
 
     model = get_top_model(bottleneck_features_train.shape[1:])
 
+    print('\nFitting the model ... ...')
     model.fit(bottleneck_features_train, y_train,
               epochs=5,
               batch_size=10,
               validation_data=(bottleneck_features_test, y_test))
 
+    print('\nSaving the weights ... ...')
     model.save_weights('../../dsi-capstone-data/top_model_weights.h5')
+
+    stop_time = dt.datetime.now()
+    print("Training the top model took ",
+        (stop_time - start_time).total_seconds(), "s.\n")
+    pass
+
+def fine_tune_model():
+    pass
 
 
 def main():

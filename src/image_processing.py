@@ -13,18 +13,19 @@ import sys
 IMAGE_DATA_PATH = '../../dsi-capstone-data/data/bin-images/'
 JSON_DATA_PATH = '../../dsi-capstone-data/data/metadata/'
 
-'''
-The ImageProcessing class provides an object that analyses the raw data folders
-to determine and store the following information:
-    1) total number of image/json files
-    2) labels for each image, list of unique labels, and list of missing labels
-
-Functions:
-
-    pre_process_images()
-        reads images, converts data to arrays, and resizes to a common size.
-'''
 class ImageProcessing(object):
+    '''
+    The ImageProcessing class provides an object that analyses the bin-image
+    data folders to get a sorted list of image and metadata file names. Metadata
+    files are examined to extract bin quantity labels and screen out files with 
+    a bin quatity higher than a prescribed threshold. The remaining files are
+    then randomly shuffled.
+
+    Functions:
+
+        pre_process_images()
+            reads images, converts data to arrays, and resizes to a common size.
+    '''
 
     def __init__(self, target_size=(150,150), max_qty=None):
         # self.image_path = image_path
@@ -64,7 +65,7 @@ class ImageProcessing(object):
                              test_size=0.20,
                              random_state=39)
 
-        # manually inspect small data set to ensure labels 
+        # manually inspect small data set to ensure labels
         # print(train_img)
         # print(train_lbl)
         # print(test_img)
