@@ -121,17 +121,19 @@ def save_bottlebeck_features(X_train, y_train, X_test, y_test):
     # top of the stored features for computational efficiency.
     print('\nRunning train predictor and saving features ... ...')
     bottleneck_features_train = model.predict_generator(
-        train_generator, X_train.shape[0] // batch_size)
+        generator=train_generator)
+        #X_train.shape[0] // batch_size)
     np.save('../../dsi-capstone-data/bottleneck_features_train.npy',
             bottleneck_features_train)
     print("Train bottleneck feature length = ", len(bottleneck_features_train))
 
     print('\nRunning test predictor and saving features ... ...')
     bottleneck_features_test = model.predict_generator(
-        test_generator, X_test.shape[0] // batch_size)
+        generator=test_generator)
+        #X_test.shape[0] // batch_size)
     np.save('../../dsi-capstone-data/bottleneck_features_test.npy',
             bottleneck_features_test)
-    print("Test bottleneck feature length = ", len(bottleneck_features_train))
+    print("Test bottleneck feature length = ", len(bottleneck_features_test))
 
     stop_time = dt.datetime.now()
     print("Computing bottleneck features took ",
