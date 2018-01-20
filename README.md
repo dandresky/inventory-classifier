@@ -101,5 +101,6 @@ See these sites for references on managing the conda environments
 The following is a brief overview of the source files and their use in the project.  
 
 - [explore-data.py](src/explore-data.py) - this script is written to facilitate exploration of the data. Some functions may have value later in the project.
-- [image-processing.py](src/image-processing.py) - contains ImageProcessing class that scans the data folder and returns batches of images that have been resized and converted to arrays. Also extracts labels from JSON files and provides a number of stats on the data.
+- [image-processing.py](src/image-processing.py) - contains ImageProcessing class that scans the data folders, extracts image labels, and selectively pulls desired images to be resized and converted to arrays.
 - [keras-cifar10-cnn-eval.py](src/keras-cifar10-cnn-eval.py) - a script with an example CNN architecture that classifies images from the CIFAR-10 dataset. Purpose is to test EC2 AMI's with an architecture that has a known baseline and to explore some of the Keras framework.
+- [model_vgg16.py](src/model_vgg16.py) - functions to build a model based on the VGG16 architecture and pre-trained on the Imagenet dataset. Functionality includes computing bottleneck features, training a top layer, and fine tuning.

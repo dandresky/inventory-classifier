@@ -17,7 +17,7 @@ class ImageProcessing(object):
     '''
     The ImageProcessing class provides an object that analyses the bin-image
     data folders to get a sorted list of image and metadata file names. Metadata
-    files are examined to extract bin quantity labels and screen out files with 
+    files are examined to extract bin quantity labels and screen out files with
     a bin quatity higher than a prescribed threshold. The remaining files are
     then randomly shuffled.
 
@@ -27,10 +27,15 @@ class ImageProcessing(object):
             reads images, converts data to arrays, and resizes to a common size.
     '''
 
-    def __init__(self, target_size=(150,150), max_qty=None):
-        # self.image_path = image_path
-        self.target_size = target_size
-        self.max_qty = max_qty
+    def __init__(self):
+        '''
+        Instance Variables:
+            -   image_files
+            -   json_files
+            -   labels
+            -   unique_labels   (only needed during initial EDA)
+            -   missing_labels  (only needed during initial EDA)
+        '''
         # get an array of image and json file names, randomly shuffled
         self.image_files, self.json_files = self._get_file_name_arrays()
         # get an array of labels in the same shuffled order as the image and
@@ -42,17 +47,68 @@ class ImageProcessing(object):
         self.missing_labels = self._get_missing_labels()
         pass
 
-    def pre_process_images(self):
+    def pre_process_images(self, target_size=(150,150), max_qty=None, empty_bins=False):
         '''
         Pre-process all images and save data as numpy arrays to disk. This is
-        alternative method to batch processing in first version. This is called
-        once from the console, then the model accesses the saved numpy arrays
-        for training and test.
+        called from the terminal, then the model accesses the saved numpy
+        arrays for training and test.
+
+        The first step is to screen the data set for desired items. The MVP
+        focuses first on categorizing if a bin has items or not by selecting
+        all files with 0 items, then randomly selecting an equal
+        nuumber of images from the rest.
+
+        The MVP+ will attempt to count items in a bin and allow to select a
+        max item quantity, discarding all other images.
+
+        Inputs:
+            target_size: tuple of the x and y dimensions
+            empty_bins: if True, selects all 0 qty bin images and equal number
+                        of others
+            max_qty: selects everything less than or equal to max_qty, ignored
+                     if empty_bins=True
+
+        Outputs:
+            npy files written to ../../dsi-capstone-data/
+            -   processed_training_images.npy
+            -   processed_test_images.npy
+            -   training_labels.npy
+            -   test_labels.npy
         '''
         # filter out the image files, json files, and labels that exceed the
         # maximum quantity. This is to strip out the the outliers (bin
         # quanities that are too large to detect)
-        if self.max_qty:
+        if empty_bins == True:
+            # print(self.image_files)
+            # print(self.json_files)
+            # print(self.labels)
+            mask = np.where(self.labels == 0)
+            empty_images = self.image_files[mask]
+            empty_json= self.json_files[mask]
+            empty_labels = self.labels[mask]
+            mask = np.where(self.labels > 0)
+            other_images = self.image_files[mask]
+            other_json= self.json_files[mask]
+            other_labels = np.ones(len(empty_images))
+            # now merge. 'other' files are already randomly shuffled so I'll
+            # take the first len(empty_images) after masking files with 0 qty.
+            all_images = np.append(empty_images, other_images[:len(empty_images)])
+            all_json = np.append(empty_json, other_json[:len(empty_images)])
+            all_labels = np.append(empty_labels, other_labels)
+            # print(all_images)
+            # print(all_json)
+            # print(all_labels)
+            # randomly shuffle the files consistently
+            new_list = list(zip(list(all_images), list(all_json), list(all_labels)))
+            random.shuffle(new_list)
+            all_images, all_json, all_labels = zip(*new_list)
+            self.image_files = np.array(all_images)
+            self.json_files = np.array(all_json)
+            self.labels = np.array(all_labels)
+            # print(self.image_files)
+            # print(self.json_files)
+            # print(self.labels)
+        elif self.max_qty:
             mask = np.where(self.labels <= self.max_qty)
             self.image_files = self.image_files[mask]
             self.json_files = self.json_files[mask]
@@ -74,70 +130,48 @@ class ImageProcessing(object):
         # create the processed training image array. Pixel values saved are
         # uint8 to save space. Normalization needs to be done in the model.
         print('\nPre-processing training images ... ...')
-        start_time = dt.datetime.now()
-
         depth = 3
-        arr = np.zeros((len(train_img), self.target_size[0], self.target_size[1], depth), dtype=np.uint8)
+        arr = np.zeros((len(train_img), target_size[0], target_size[1], depth), dtype=np.uint8)
         for idx, img in enumerate(train_img):
             with open(IMAGE_DATA_PATH + img, 'r+b') as f:
                 with Image.open(f) as image:
-                    resized_image = resizeimage.resize_contain(image, self.target_size)
+                    resized_image = resizeimage.resize_contain(image, target_size)
                     resized_image = resized_image.convert("RGB")
                     #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
                     X = img_to_array(resized_image).astype(np.uint8)
                     arr[idx] = X
             if (idx + 1) % 1000 == 0:
                 print(idx+1, "out of", len(train_img), "training images have been processed")
-        stop_time = dt.datetime.now()
-        print("Pre-processing of training images took ", (stop_time - start_time).total_seconds(), "s.\n")
 
         print('\nSaving the processed training images array ... ...')
-        start_time = dt.datetime.now()
-
         print("Size of numpy array = ", sys.getsizeof(arr))
         np.save('../../dsi-capstone-data/processed_training_images.npy', arr)
-
-        stop_time = dt.datetime.now()
-        print("Saving processed array took ", (stop_time - start_time).total_seconds(), "s.\n")
 
         # create the processed test image array. Pixel values saved are
         # uint8 to save space. Normalization needs to be done in the model?
         print('\nPre-processing test images ... ...')
-        start_time = dt.datetime.now()
         depth = 3
-        arr = np.zeros((len(test_img), self.target_size[0], self.target_size[1], depth), dtype=np.uint8)
+        arr = np.zeros((len(test_img), target_size[0], target_size[1], depth), dtype=np.uint8)
         for idx, img in enumerate(test_img):
             with open(IMAGE_DATA_PATH + img, 'r+b') as f:
                 with Image.open(f) as image:
-                    resized_image = resizeimage.resize_contain(image, self.target_size)
+                    resized_image = resizeimage.resize_contain(image, target_size)
                     resized_image = resized_image.convert("RGB")
                     #resized_image.save(IMAGE_DATA_PATH + 'resized-' + self.X_train[self.batch_index], image.format)
                     X = img_to_array(resized_image).astype(np.uint8)
                     arr[idx] = X
             if (idx + 1) % 1000 == 0:
                 print(idx+1, "out of", len(test_img), "test images have been processed")
-        stop_time = dt.datetime.now()
-        print("Pre-processing took ", (stop_time - start_time).total_seconds(), "s.\n")
 
         print('\nSaving the processed test images array ... ...')
-        start_time = dt.datetime.now()
-
         print("Size of numpy array = ", sys.getsizeof(arr))
         np.save('../../dsi-capstone-data/processed_test_images.npy', arr)
 
-        stop_time = dt.datetime.now()
-        print("Saving array took ", (stop_time - start_time).total_seconds(), "s.\n")
-
         print('\nSaving the train/test label arrays ... ...')
-        start_time = dt.datetime.now()
-
         print("Size of training labels numpy array = ", sys.getsizeof(train_lbl))
         np.save('../../dsi-capstone-data/training_labels.npy', train_lbl)
         print("Size of test labels numpy array = ", sys.getsizeof(test_lbl))
         np.save('../../dsi-capstone-data/test_labels.npy', test_lbl)
-
-        stop_time = dt.datetime.now()
-        print("Saving arrays took ", (stop_time - start_time).total_seconds(), "s.\n")
 
         pass
 
@@ -199,8 +233,10 @@ class ImageProcessing(object):
 
 def main():
     random.seed(39)
-    img_proc = ImageProcessing(target_size=(224,224), max_qty=2)
-    img_proc.pre_process_images()
+    img_proc = ImageProcessing()
+    img_proc.pre_process_images(target_size=(224,224),
+                                max_qty=None,    # ignored if empty_bins=True
+                                empty_bins=True)
 
 
 
