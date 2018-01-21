@@ -6,10 +6,10 @@ from keras.preprocessing.image import ImageDataGenerator as idg
 from keras.utils.np_utils import to_categorical
 import numpy as np
 
-BATCH_SIZE = 2
-EPOCHS = 20
+BATCH_SIZE = 32
+EPOCHS = 4
 # Set NUM_CLASSES to 0 to look for empty bins. Set it to Qty+1 to count items
-NUM_CLASSES = 3
+NUM_CLASSES = 0
 
 
 def build_model(input_shape):
@@ -18,20 +18,50 @@ def build_model(input_shape):
     model = Sequential()
     model.add(Conv2D(32, (3, 3), input_shape=input_shape))
     model.add(Activation('relu'))
+    model.add(Conv2D(32, (3, 3)))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.1))
 
     model.add(Conv2D(64, (3, 3)))
     model.add(Activation('relu'))
+    model.add(Conv2D(64, (3, 3)))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.1))
 
     model.add(Conv2D(128, (3, 3)))
     model.add(Activation('relu'))
+    model.add(Conv2D(128, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(Conv2D(128, (3, 3)))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.1))
+
+    model.add(Conv2D(256, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(Conv2D(256, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(Conv2D(256, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.1))
+
+    model.add(Conv2D(256, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(Conv2D(256, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(Conv2D(256, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.1))
 
     model.add(Flatten())
-    model.add(Dense(256))
+    model.add(Dense(2048))
     model.add(Activation('relu'))
-    model.add(Dropout(0.5))
+    model.add(Dense(2048))
+    model.add(Activation('relu'))
     if NUM_CLASSES == 0:
         model.add(Dense(1))
         model.add(Activation('sigmoid'))
