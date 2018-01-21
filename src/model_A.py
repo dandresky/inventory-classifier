@@ -5,6 +5,7 @@ from keras.preprocessing.image import ImageDataGenerator as idg
 import numpy as np
 
 BATCH_SIZE = 2
+EPOCHS = 20
 
 
 def build_model(input_shape):
@@ -15,16 +16,16 @@ def build_model(input_shape):
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
-    model.add(Conv2D(32, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
     model.add(Conv2D(64, (3, 3)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
+    model.add(Conv2D(128, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
     model.add(Flatten())
-    model.add(Dense(64))
+    model.add(Dense(256))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     model.add(Dense(1))
@@ -140,13 +141,13 @@ def main():
         get_datagenerators_v1(X_train, y_train, X_test, y_test)
 
     # get the model
-    print(X_train.shape[1:])
     model = build_model(input_shape=X_train.shape[1:])
+    print(model.summary())
 
     print('\nFitting the model ...')
     model.fit_generator(train_generator,
         steps_per_epoch=X_train.shape[0] // BATCH_SIZE,
-        epochs=50,
+        epochs=EPOCHS,
         verbose=True,
         callbacks=None,
         validation_data=None,
@@ -174,6 +175,10 @@ def main():
         verbose=True)
     print("Predictions: ", pred)
     print("Actual: ", y_test)
+    np.save('../../dsi-capstone-data/model_A_predictions.npy', pred)
+
+    print("Saving model ...")
+    model.save('../../dsi-capstone-data/model_A.h5')
 
 
 
