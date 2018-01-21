@@ -238,10 +238,40 @@ class ImageProcessing(object):
             # print(self.json_files)
             # print(self.labels)
         elif max_qty:
-            mask = np.where(self.labels <= max_qty)
-            self.image_files = self.image_files[mask]
-            self.json_files = self.json_files[mask]
-            self.labels = self.labels[mask]
+            smallest_set = 200000
+            groups = []
+            for qty in range(max_qty+1):
+                mask = np.where(self.labels == qty)
+                groups.append([self.image_files[mask],
+                               self.json_files[mask],
+                               self.labels[mask]])
+                if mask[0].size < smallest_set:
+                    smallest_set = mask[0].size
+            all_images = groups[0][0][:smallest_set]
+            all_json = groups[0][1][:smallest_set]
+            all_labels = groups[0][2][:smallest_set]
+            for idx in range(1, max_qty+1):
+                all_images = np.append(all_images, groups[idx][0][:smallest_set])
+                all_json = np.append(all_json, groups[idx][1][:smallest_set])
+                all_labels = np.append(all_labels, groups[idx][2][:smallest_set])
+            # print(all_images)
+            # print(all_json)
+            # print(all_labels)
+            # randomly shuffle the files consistently
+            new_list = list(zip(list(all_images), list(all_json), list(all_labels)))
+            random.shuffle(new_list)
+            all_images, all_json, all_labels = zip(*new_list)
+            self.image_files = np.array(all_images)
+            self.json_files = np.array(all_json)
+            self.labels = np.array(all_labels)
+            # print(self.image_files)
+            # print(self.json_files)
+            # print(self.labels)
+
+            # mask = np.where(self.labels <= max_qty)
+            # self.image_files = self.image_files[mask]
+            # self.json_files = self.json_files[mask]
+            # self.labels = self.labels[mask]
 
         pass
 
