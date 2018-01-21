@@ -78,41 +78,7 @@ class ImageProcessing(object):
         # filter out the image files, json files, and labels that exceed the
         # maximum quantity. This is to strip out the the outliers (bin
         # quanities that are too large to detect)
-        if empty_bins == True:
-            # print(self.image_files)
-            # print(self.json_files)
-            # print(self.labels)
-            mask = np.where(self.labels == 0)
-            empty_images = self.image_files[mask]
-            empty_json= self.json_files[mask]
-            empty_labels = self.labels[mask]
-            mask = np.where(self.labels > 0)
-            other_images = self.image_files[mask]
-            other_json= self.json_files[mask]
-            other_labels = np.ones(len(empty_images))
-            # now merge. 'other' files are already randomly shuffled so I'll
-            # take the first len(empty_images) after masking files with 0 qty.
-            all_images = np.append(empty_images, other_images[:len(empty_images)])
-            all_json = np.append(empty_json, other_json[:len(empty_images)])
-            all_labels = np.append(empty_labels, other_labels)
-            # print(all_images)
-            # print(all_json)
-            # print(all_labels)
-            # randomly shuffle the files consistently
-            new_list = list(zip(list(all_images), list(all_json), list(all_labels)))
-            random.shuffle(new_list)
-            all_images, all_json, all_labels = zip(*new_list)
-            self.image_files = np.array(all_images)
-            self.json_files = np.array(all_json)
-            self.labels = np.array(all_labels)
-            # print(self.image_files)
-            # print(self.json_files)
-            # print(self.labels)
-        elif self.max_qty:
-            mask = np.where(self.labels <= self.max_qty)
-            self.image_files = self.image_files[mask]
-            self.json_files = self.json_files[mask]
-            self.labels = self.labels[mask]
+        self._screen_data_by_qty(max_qty, empty_bins)
 
         # create the train test split
         train_img, test_img, train_lbl, test_lbl = \
@@ -230,13 +196,62 @@ class ImageProcessing(object):
         '''
         return list(sorted(set(self.labels)))
 
+    def _screen_data_by_qty(self, max_qty, empty_bins):
+        '''
+        The Amazon bin-image data set consists of more than 500k Images
+        with quantities that range between 0 and more than 200. This
+        functions screens the data to support different counting strategies
+        during model development. To start, I will develop a model that
+        can recognize empty bins, then I will be trying to count small
+        quantities working my way up to larger. This function will screen
+        unwanted quanties and ensure there is no class imbalance in the
+        remaining images.
+        '''
+        if empty_bins == True:
+            # print(self.image_files)
+            # print(self.json_files)
+            # print(self.labels)
+            mask = np.where(self.labels == 0)
+            empty_images = self.image_files[mask]
+            empty_json= self.json_files[mask]
+            empty_labels = self.labels[mask]
+            mask = np.where(self.labels > 0)
+            other_images = self.image_files[mask]
+            other_json= self.json_files[mask]
+            other_labels = np.ones(len(empty_images))
+            # now merge. 'other' files are already randomly shuffled so I'll
+            # take the first len(empty_images) after masking files with 0 qty.
+            all_images = np.append(empty_images, other_images[:len(empty_images)])
+            all_json = np.append(empty_json, other_json[:len(empty_images)])
+            all_labels = np.append(empty_labels, other_labels)
+            # print(all_images)
+            # print(all_json)
+            # print(all_labels)
+            # randomly shuffle the files consistently
+            new_list = list(zip(list(all_images), list(all_json), list(all_labels)))
+            random.shuffle(new_list)
+            all_images, all_json, all_labels = zip(*new_list)
+            self.image_files = np.array(all_images)
+            self.json_files = np.array(all_json)
+            self.labels = np.array(all_labels)
+            # print(self.image_files)
+            # print(self.json_files)
+            # print(self.labels)
+        elif max_qty:
+            mask = np.where(self.labels <= max_qty)
+            self.image_files = self.image_files[mask]
+            self.json_files = self.json_files[mask]
+            self.labels = self.labels[mask]
+
+        pass
+
 
 def main():
     random.seed(39)
     img_proc = ImageProcessing()
     img_proc.pre_process_images(target_size=(224,224),
-                                max_qty=None,    # ignored if empty_bins=True
-                                empty_bins=True)
+                                max_qty=2,    # ignored if empty_bins=True
+                                empty_bins=False)
 
 
 

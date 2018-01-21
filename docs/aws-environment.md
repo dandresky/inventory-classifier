@@ -6,7 +6,7 @@ This document details the AWS AMI I developed for this project.
 
 All data is obtained and stored in a S3 bucket for low-cost long-term storage. When the project is completed the S3 bucket can be moved to Glacier storage.
 
-A 100GB EBS volume is provisioned from an [Amazon Deep Learning Image (AMI)](https://aws.amazon.com/machine-learning/amis/) that includes most of the current deep learning tools such as Tensorflow, Theano, Keras, Anaconda, etc. that can be accessed through various canned environments. This Image will be updated as needed to execute the project and the volume can me attached to a variety of multi-core GPU instances.
+A 200GB EBS volume is provisioned from an [Amazon Deep Learning Image (AMI)](https://aws.amazon.com/machine-learning/amis/) that includes most of the current deep learning tools such as Tensorflow, Theano, Keras, Anaconda, etc. that can be accessed through various canned environments. This Image will be updated as needed to execute the project and the volume can be attached to a variety of multi-core GPU instances.
 
 Note: [Instructions on attach/detach of volumes and changing size](https://n2ws.com/how-to-guides/how-to-increase-the-size-of-an-aws-ebs-cloud-volume-attached-to-a-linux-machine.html)
 

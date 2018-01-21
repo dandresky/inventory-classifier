@@ -1,11 +1,15 @@
+import keras
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.models import Sequential
 from keras.preprocessing.image import ImageDataGenerator as idg
+from keras.utils.np_utils import to_categorical
 import numpy as np
 
 BATCH_SIZE = 2
 EPOCHS = 20
+# Set NUM_CLASSES to 0 to look for empty bins. Set it to Qty+1 to count items
+NUM_CLASSES = 3
 
 
 def build_model(input_shape):
@@ -28,12 +32,20 @@ def build_model(input_shape):
     model.add(Dense(256))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(1))
-    model.add(Activation('sigmoid'))
+    if NUM_CLASSES == 0:
+        model.add(Dense(1))
+        model.add(Activation('sigmoid'))
+        model.compile(loss='binary_crossentropy',
+                      optimizer='rmsprop',
+                      metrics=['accuracy'])
+    else:
+        model.add(Dense(NUM_CLASSES))
+        model.add(Activation('softmax'))
+        model.compile(loss='categorical_crossentropy',
+                      optimizer='rmsprop',
+                      metrics=['accuracy'])
 
-    model.compile(loss='binary_crossentropy',
-                  optimizer='rmsprop',
-                  metrics=['accuracy'])
+
     return model
 
 def get_datagenerators_v1(X_train, y_train, X_test, y_test):
@@ -134,6 +146,13 @@ def main():
 
     # read pre-processed data and trim to integer number of batches
     X_train, y_train, X_test, y_test = get_data()
+
+    # convert classes to categorical if trying to count items in a bin
+    if NUM_CLASSES > 0:
+        print(y_train)
+        y_train = to_categorical(y_train, NUM_CLASSES)
+        print(y_train)
+        y_test = to_categorical(y_test, NUM_CLASSES)
 
     # data generators are instructions to Keras for further processing of the
     # image data (in batches) before training on the image.
