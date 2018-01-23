@@ -48,13 +48,23 @@ The image and json document below are an example of what is available.
 
 For classifying empty vs. non-empty bins, I screen the dataset selecting all images with empty bins and then randomly selecting an equal number of images from the rest of the dataset. There are approximately 10k empty bin images.
 
-For counting items I employ a similar screening process, selecting all empty bin images, and then randomly selecting and equal number of images from 1-item bins, 2-item bins, and so on.
+For counting items I employ a similar screening process, selecting all empty bin images, and then randomly selecting an equal number of images from 1-item bins, 2-item bins, and so on. This strategy work up to 11 items in a bin. Quantities higher than 11 have fewer images than empty bins but I won't attempt to count in this capstone project.
 
 # Project Overview
 
 ### Counting Items in a bin (MVP and MVP+)
 
-Identifying and counting generic items in an image without labels is a particularly difficult challenge.
+Identifying and counting generic items in an image without labels is a particularly difficult challenge. Common issues cited in literature are:
+
+- object type to be counted (many labeled examples to train on)
+- items overlap or vary in size with distance
+- image quality
+
+Pre-training a deep convolutional net on large datasets with large number of classes such as Imagenet seems the most common approach but is not practical in this case. The model must learn to count generic unknown and never before seen objects from common features. My hypothesis is that inventory items in a bin will typically take on one of a couple of common shapes (box, cylinder, book, etc.). My goal is to train a model to recognize these features and count the objects they represent.
+
+The first useful model is one that can recognize empty bins to allow better utilization of space. Bins with a low number of items could also be under-utilized requiring a model that could count up to say 5 generic objects. The following model architectures are considered:  
+
+![]('img/model_A.png')
 
 ### Classifying Items (MVP++)
 
@@ -65,6 +75,12 @@ The first part of my strategy is to use NLP techniques to extract latent feature
 The second part of my strategy is to leverage a very important property of deep learning models, and that is the ability to pretrain a model on a larger dataset, such as the Imagenet dataset, then use it to bootstrap the learning process on a smaller dataset. There are many pre-trained models publicly available for download that can be used to bootstrap learning. I might also be able to use the model I train for counting items in a bin.
 
 See this [Keras blog](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html) for an example on training a model with small datasets. Of particular interest is the strategy to "augment" the images via a number of random transformations, so that our model would never see twice the exact same picture. This helps prevent overfitting and helps the model generalize better.
+
+# Results
+
+![]()
+
+# Miscellaneous
 
 ### Notes
 
@@ -96,7 +112,7 @@ See these sites for references on managing the conda environments
 - https://conda.io/docs/user-guide/tasks/manage-environments.html
 
 
-# Source Files
+### Source Files
 
 The following is a brief overview of the source files and their use in the project.  
 

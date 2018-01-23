@@ -20,6 +20,7 @@ OPTIMIZER = 'rmsprop'
 
 def build_model(input_shape):
 
+    logging.info("Build Convolutional and Fully Connected layers ...")
     print("Build Convolutional and Fully Connected layers ... ")
     model = Sequential()
     model.add(Conv2D(32, (3, 3), input_shape=input_shape))
