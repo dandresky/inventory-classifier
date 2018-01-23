@@ -9,6 +9,7 @@ import random
 from resizeimage import resizeimage
 from sklearn.model_selection import train_test_split
 import sys
+import tensorflow as tf
 
 IMAGE_DATA_PATH = '../../dsi-capstone-data/data/bin-images/'
 JSON_DATA_PATH = '../../dsi-capstone-data/data/metadata/'
@@ -278,10 +279,12 @@ class ImageProcessing(object):
 
 def main():
     random.seed(39)
+    np.random.seed(39)
+    tf.set_random_seed(39)
     img_proc = ImageProcessing()
     img_proc.pre_process_images(target_size=(224,224),
-                                max_qty=2,    # ignored if empty_bins=True
-                                empty_bins=False)
+                                max_qty=5,    # ignored if empty_bins=True
+                                empty_bins=True)
 
 
 

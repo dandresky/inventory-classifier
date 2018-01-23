@@ -1,15 +1,21 @@
+import datetime as dt
 import keras
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.models import Sequential
 from keras.preprocessing.image import ImageDataGenerator as idg
 from keras.utils.np_utils import to_categorical
+import logging
 import numpy as np
+import os
+import random
+import tensorflow as tf
 
-BATCH_SIZE = 32
-EPOCHS = 10
+BATCH_SIZE = 64
+EPOCHS = 40
 # Set NUM_CLASSES to 0 to look for empty bins. Set it to Qty+1 to count items
 NUM_CLASSES = 0
+OPTIMIZER = 'rmsprop'
 
 
 def build_model(input_shape):
@@ -40,13 +46,13 @@ def build_model(input_shape):
         model.add(Dense(1))
         model.add(Activation('sigmoid'))
         model.compile(loss='binary_crossentropy',
-                      optimizer='rmsprop',
+                      optimizer=OPTIMIZER,
                       metrics=['accuracy'])
     else:
         model.add(Dense(NUM_CLASSES))
         model.add(Activation('softmax'))
         model.compile(loss='categorical_crossentropy',
-                      optimizer='rmsprop',
+                      optimizer=OPTIMIZER,
                       metrics=['accuracy'])
 
     return model
@@ -189,27 +195,47 @@ def get_data():
     data generator. The leftover samples are trimmed from the data set to avoid
     this.
     '''
+    logging.info('Loading numpy arrays ...')
     print('\nLoading numpy arrays ... ...')
     X_train = np.load('../../dsi-capstone-data/processed_training_images.npy')
     X_test = np.load('../../dsi-capstone-data/processed_test_images.npy')
     y_train = np.load('../../dsi-capstone-data/training_labels.npy')
     y_test = np.load('../../dsi-capstone-data/test_labels.npy')
 
-    print("Trim train and test data to integer number of batches ...")
+    logging.info('Trimming data to integer number of batches ...')
+    print("Trimming data to integer number of batches ...")
     num_train_batches = X_train // BATCH_SIZE
     num_test_batches = X_test // BATCH_SIZE
     X_train = X_train[:len(num_train_batches * BATCH_SIZE)]
     y_train = y_train[:len(num_train_batches * BATCH_SIZE)]
     X_test = X_test[:len(num_test_batches * BATCH_SIZE)]
     y_test = y_test[:len(num_test_batches * BATCH_SIZE)]
-    print("X_train samples = ", X_train.shape[0])
-    print("y_train samples = ", y_train.shape[0])
-    print("X_test samples = ", X_test.shape[0])
-    print("y_test samples = ", y_test.shape[0])
+    logging.info("  X_train samples = %d" % X_train.shape[0])
+    logging.info("  y_train samples = %d" % y_train.shape[0])
+    logging.info("  X_test samples = %d" % X_test.shape[0])
+    logging.info("  y_test samples = %d" % y_test.shape[0])
 
     return X_train, y_train, X_test, y_test
 
 def main():
+
+    # init random seeds to ensure consistent results during evaluation
+    random.seed(39)
+    np.random.seed(39)
+    tf.set_random_seed(39)
+
+    # begin a logging function to record events
+    try:
+        os.remove('model_A.log')    # delete the existing file to start new
+    except OSError:
+        pass
+    logging.basicConfig(filename='model_A.log',level=logging.DEBUG)
+    logging.info('Begin training model A ...')
+    logging.info("  Batch size = %s" % BATCH_SIZE)
+    logging.info("  Epochs = %s" % EPOCHS)
+    logging.info("  Number of classes = %s" % NUM_CLASSES)
+    logging.info("  Optimizer = %s" % OPTIMIZER)
+    start_time = dt.datetime.now()
 
     # read pre-processed data and trim to integer number of batches
     X_train, y_train, X_test, y_test = get_data()
@@ -228,8 +254,10 @@ def main():
 
     # get the model
     model = build_model(input_shape=X_train.shape[1:])
-    print(model.summary())
+    logging.info("Model Summary \n%s" % model.to_json())
+    model.summary()
 
+    logging.info('Fitting the model ...')
     print('\nFitting the model ...')
     model.fit_generator(train_generator,
         steps_per_epoch=X_train.shape[0] // BATCH_SIZE,
@@ -244,6 +272,7 @@ def main():
         use_multiprocessing=False,
         initial_epoch=0)
 
+    logging.info('Scoring the model ...')
     print('\nScoring the model ...')
     scores = model.evaluate_generator(test_generator,
         steps=X_test.shape[0] // BATCH_SIZE,
@@ -251,20 +280,29 @@ def main():
         workers=8,
         use_multiprocessing=False)
     print(scores)
+    logging.info("  Loss: %.3f    Accuracy: %.3f" % (scores[0], scores[1]))
 
-    print('\nMake predictions ...')
+    logging.info('Making predictions ...')
+    print('\nMaking predictions ...')
     pred = model.predict_generator(test_generator,
         steps=X_test.shape[0] // BATCH_SIZE,
         max_queue_size=BATCH_SIZE*8,
         workers=8,
         use_multiprocessing=False,
         verbose=True)
+
     print("Predictions: ", pred)
     print("Actual: ", y_test)
     np.save('../../dsi-capstone-data/model_A_predictions.npy', pred)
 
+    logging.info("Saving model ...")
     print("Saving model ...")
     model.save('../../dsi-capstone-data/model_A.h5')
+
+    stop_time = dt.datetime.now()
+    print("Scanning and shuffling took ", (stop_time - start_time).total_seconds(), "s.\n")
+    logging.info("Training complete. Elapsed time = %.0fs", (stop_time - start_time).total_seconds())
+
 
 
 

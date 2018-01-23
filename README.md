@@ -12,9 +12,9 @@ As an electrical engineer I have developed numerous electronic devices and partn
 
 Machine learning tools can be leveraged to help solve these crucial business issues and many more. With this project, I intend to design a deep learning neural network capable of counting and identifying inventory items in a warehouse from images of their storage locations. Armed with this capability, robotic tools and systems can be developed to automate processes allowing material and production planners to improve operations efficiency and reduce costs.
 
-### Minimum Viable Product (MVP)
+### Minimum Viable Product (MVP and MVP+)
 
-Due to the time frames for the capstone project, the MVP will be a trained network that can count each of the distinct items in a storage location.
+My MVP is a trained network that can distinguish between empty and non-empty bins. My MVP+ is a trained network that can count generic items in a bin. Due to the difficult nature of the problem, I limit counting up to 5 and 10 items.
 
 ### MVP +
 
@@ -44,17 +44,17 @@ The image and json document below are an example of what is available.
 
 ![](img/bin_cnts.png)
 
-- The largest image width is 1202 pixels and the largest height is 1193 pixels
-- The smallest image width is 289 pixels and the smallest height is 192 pixels
-- There are ?? unique images size and the following figure illustrates an example distribution of 20 image sizes.
+### Data Screening (counting)
 
-![](img/size_cnts.png)
+For classifying empty vs. non-empty bins, I screen the dataset selecting all images with empty bins and then randomly selecting an equal number of images from the rest of the dataset. There are approximately 10k empty bin images.
 
-# Project Plan
+For counting items I employ a similar screening process, selecting all empty bin images, and then randomly selecting and equal number of images from 1-item bins, 2-item bins, and so on.
 
-### Counting Items in a bin (MVP)
+# Project Overview
 
+### Counting Items in a bin (MVP and MVP+)
 
+Identifying and counting generic items in an image without labels is a particularly difficult challenge.
 
 ### Classifying Items (MVP++)
 
@@ -103,4 +103,5 @@ The following is a brief overview of the source files and their use in the proje
 - [explore-data.py](src/explore-data.py) - this script is written to facilitate exploration of the data. Some functions may have value later in the project.
 - [image-processing.py](src/image-processing.py) - contains ImageProcessing class that scans the data folders, extracts image labels, and selectively pulls desired images to be resized and converted to arrays.
 - [keras-cifar10-cnn-eval.py](src/keras-cifar10-cnn-eval.py) - a script with an example CNN architecture that classifies images from the CIFAR-10 dataset. Purpose is to test EC2 AMI's with an architecture that has a known baseline and to explore some of the Keras framework.
+- [model_A.py](src/model_A.py) - functions to build, evaluate, and perform predictions on a custom deep learning model designed for the Amazon bin-image dataset.
 - [model_vgg16.py](src/model_vgg16.py) - functions to build a model based on the VGG16 architecture and pre-trained on the Imagenet dataset. Functionality includes computing bottleneck features, training a top layer, and fine tuning.
