@@ -64,7 +64,7 @@ Pre-training a deep convolutional net on large datasets with large number of cla
 
 The first useful model is one that can recognize empty bins to allow better utilization of space. Bins with a low number of items could also be under-utilized requiring a model that could count up to say 5 generic objects. The following model architectures are considered:  
 
-![]('img/model_A.png')
+![](img/model_A.png)
 
 ### Classifying Items (MVP++)
 
