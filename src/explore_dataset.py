@@ -14,8 +14,8 @@ from os.path import isfile, join
 from PIL import Image
 import sys
 
-IMAGE_DATA_PATH = '../data/bin-images/'
-JSON_DATA_PATH = '../data/metadata/'
+IMAGE_DATA_PATH = '../../dsi-capstone-data/data/bin-images/'
+JSON_DATA_PATH = '../../dsi-capstone-data/data/metadata/'
 
 def get_image_file_names():
     '''
