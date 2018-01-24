@@ -116,7 +116,7 @@ def main():
             ax.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
             ax.set_ylabel('Number of Unique Items', fontsize=16)
             ax.set_xlabel('Ocurances of Item in Full Dataset', fontsize=16)
-            plt.savefig('item_cnts.png')
+            plt.savefig('item_cnts.png', transparent=True)
             plt.show()
 
             fig, ax = plt.subplots(1,1, figsize=(8,4))
@@ -125,7 +125,7 @@ def main():
             ax.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
             ax.set_ylabel('Bins', fontsize=16)
             ax.set_xlabel('Items per Bin', fontsize=16)
-            plt.savefig('bin_cnts.png')
+            plt.savefig('bin_cnts.png', transparent=True)
             plt.show()
     elif sys.argv[1] == '--si':
         # scan image files and extract useful information
