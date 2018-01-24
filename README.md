@@ -60,7 +60,7 @@ Identifying and counting generic items in an image without labels is a particula
 - items overlap or vary in size with distance
 - image quality
 
-Pre-training a deep convolutional net on large datasets with large number of classes such as Imagenet seems the most common approach but, based on some preliminary tests, doesn't appear to be practical in this case. My model must learn to count generic unknown and never before seen objects from common features. My hypothesis is that inventory items in a bin will typically take on one of a couple of common shapes (box, cylinder, book, etc.). My goal is to train a model to recognize these features and count the objects they represent.
+Using a deep convolutional net pre-trained on large datasets with large number of classes such as Imagenet seems the most common approach but, based on some preliminary tests, doesn't appear to be practical in this case. My model must learn to count generic unknown and never before seen objects from common features. My hypothesis is that inventory items in a bin will typically take on one of a couple of common shapes (box, cylinder, book, etc.). My goal is to train a model to recognize these features and count the objects they represent.
 
 The first useful model is one that can recognize empty bins to allow better utilization of space. Bins with a low number of items could also be under-utilized requiring a model that could count up to say 5 generic objects. The following model architectures are considered:  
 
@@ -68,7 +68,7 @@ The first useful model is one that can recognize empty bins to allow better util
 
 The model on the left is based on the VGG16 architecture where the filter numbers for each layer have been cut in half to reduce training time (a restriction that exists due to the time alloted for the capstone project).
 
-The model on the right is developed specifically the empty bin use case since I don't expect this to be a particularly difficult challenge and want a model that I can easily iterate through different tuning parameters.
+The model on the right is developed specifically for the empty bin use case since I don't expect this to be a particularly difficult challenge and want a model that I can easily iterate through different tuning parameters.
 
 ### Classifying Items (MVP++)
 
@@ -84,7 +84,13 @@ See this [Keras blog](https://blog.keras.io/building-powerful-image-classificati
 
 ### Recognizing Empty Bins
 
-I trained this dataset on Model A
+I trained this dataset on Model A. The only parameters I have tested are different optimizer types (Adam, RMSProp, and SGD). As shown in the data below, SGD proved to be the best optimizer for this problem, achieving nearly 98% accuracy.
+
+![]()
+
+### Counting up to 5 Objects in a Bin
+
+I trained this dataset on both models using using all three optimizers again. Adam and RMSProp performed poorly. On the VGG16 model I saw no change in metrics after 10 epochs and abandoned these optimizers. The SGD optimizer proved to be the best here and ran all subsequent tests using this optimizer.
 
 ![]()
 
