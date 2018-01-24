@@ -8,6 +8,7 @@ from keras.utils.np_utils import to_categorical
 import logging
 import numpy as np
 import os
+import pickle
 import random
 import tensorflow as tf
 
@@ -262,7 +263,7 @@ def main():
 
     logging.info('Fitting the model ...')
     print('\nFitting the model ...')
-    model.fit_generator(train_generator,
+    hist = model.fit_generator(train_generator,
         steps_per_epoch=X_train.shape[0] // BATCH_SIZE,
         epochs=EPOCHS,
         verbose=True,
@@ -274,6 +275,7 @@ def main():
         workers=8,
         use_multiprocessing=False,
         initial_epoch=0)
+    pickle.dump(hist, open("../../dsi-capstone-data/model_A_history.pkl", "wb"))
 
     logging.info('Scoring the model ...')
     print('\nScoring the model ...')
