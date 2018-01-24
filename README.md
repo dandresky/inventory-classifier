@@ -16,7 +16,7 @@ Machine learning tools can be leveraged to help solve these crucial business iss
 
 My MVP is a trained network that can distinguish between empty and non-empty bins. My MVP+ is a trained network that can count generic items in a bin. Due to the difficult nature of the problem, I limit counting up to 5 and 10 items.
 
-### MVP +
+### MVP ++
 
 As time permits, I will expand the project to classify items either categorically or as unique part numbers/descriptions.
 
@@ -48,7 +48,7 @@ The image and json document below are an example of what is available.
 
 For classifying empty vs. non-empty bins, I screen the dataset selecting all images with empty bins and then randomly selecting an equal number of images from the rest of the dataset. There are approximately 10k empty bin images.
 
-For counting items I employ a similar screening process, selecting all empty bin images, and then randomly selecting an equal number of images from 1-item bins, 2-item bins, and so on. This strategy work up to 11 items in a bin. Quantities higher than 11 have fewer images than empty bins but I won't attempt to count in this capstone project.
+For counting items I employ a similar screening process, selecting all empty bin images, and then randomly selecting an equal number of images from 1-item bins, 2-item bins, and so on. This strategy works up to 11 items in a bin. Quantities higher than 11 have fewer images than empty bins but I won't attempt to count in this capstone project.
 
 # Project Overview
 
@@ -56,15 +56,19 @@ For counting items I employ a similar screening process, selecting all empty bin
 
 Identifying and counting generic items in an image without labels is a particularly difficult challenge. Common issues cited in literature are:
 
-- object type to be counted (many labeled examples to train on)
+- object type to be counted (need many labeled examples to train on)
 - items overlap or vary in size with distance
 - image quality
 
-Pre-training a deep convolutional net on large datasets with large number of classes such as Imagenet seems the most common approach but is not practical in this case. The model must learn to count generic unknown and never before seen objects from common features. My hypothesis is that inventory items in a bin will typically take on one of a couple of common shapes (box, cylinder, book, etc.). My goal is to train a model to recognize these features and count the objects they represent.
+Pre-training a deep convolutional net on large datasets with large number of classes such as Imagenet seems the most common approach but, based on some preliminary tests, doesn't appear to be practical in this case. My model must learn to count generic unknown and never before seen objects from common features. My hypothesis is that inventory items in a bin will typically take on one of a couple of common shapes (box, cylinder, book, etc.). My goal is to train a model to recognize these features and count the objects they represent.
 
 The first useful model is one that can recognize empty bins to allow better utilization of space. Bins with a low number of items could also be under-utilized requiring a model that could count up to say 5 generic objects. The following model architectures are considered:  
 
-![](img/model_A.png)
+![](img/vgg16.png)
+
+The model on the left is based on the VGG16 architecture where the filter numbers for each layer have been cut in half to reduce training time (a restriction that exists due to the time alloted for the capstone project).
+
+The model on the right is developed specifically the empty bin use case since I don't expect this to be a particularly difficult challenge and want a model that I can easily iterate through different tuning parameters.
 
 ### Classifying Items (MVP++)
 
@@ -77,6 +81,10 @@ The second part of my strategy is to leverage a very important property of deep 
 See this [Keras blog](https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html) for an example on training a model with small datasets. Of particular interest is the strategy to "augment" the images via a number of random transformations, so that our model would never see twice the exact same picture. This helps prevent overfitting and helps the model generalize better.
 
 # Results
+
+### Recognizing Empty Bins
+
+I trained this dataset on Model A
 
 ![]()
 
