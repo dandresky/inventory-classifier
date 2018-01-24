@@ -114,7 +114,7 @@ def main():
             ax.bar(list(inventory_counts.keys()), inventory_counts.values(), width=0.4, color='g')
             ax.set_xlim(0, 20)
             ax.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
-            ax.set_ylabel('Number of Items')
+            ax.set_ylabel('Number of Items', fontsize=16)
             ax.set_xlabel('Inventory Count')
             ax.set_title('Items vs Inventory Counts')
             plt.savefig('item_cnts.png')

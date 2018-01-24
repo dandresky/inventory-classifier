@@ -14,8 +14,8 @@ import tensorflow as tf
 BATCH_SIZE = 64
 EPOCHS = 40
 # Set NUM_CLASSES to 0 to look for empty bins. Set it to Qty+1 to count items
-NUM_CLASSES = 0
-OPTIMIZER = 'rmsprop'
+NUM_CLASSES = 6
+OPTIMIZER = 'sgd'
 
 
 def build_model(input_shape):
@@ -60,6 +60,7 @@ def build_model(input_shape):
 
 def build_vgg17_model(input_shape):
 
+    logging.info("Build Convolutional and Fully Connected layers ...")
     print("Build Convolutional and Fully Connected layers ... ")
     model = Sequential()
     model.add(Conv2D(32, (3, 3), input_shape=input_shape))
@@ -112,13 +113,13 @@ def build_vgg17_model(input_shape):
         model.add(Dense(1))
         model.add(Activation('sigmoid'))
         model.compile(loss='binary_crossentropy',
-                      optimizer='rmsprop',
+                      optimizer=OPTIMIZER,
                       metrics=['accuracy'])
     else:
         model.add(Dense(NUM_CLASSES))
         model.add(Activation('softmax'))
         model.compile(loss='categorical_crossentropy',
-                      optimizer='rmsprop',
+                      optimizer=OPTIMIZER,
                       metrics=['accuracy'])
     return model
 
@@ -254,7 +255,8 @@ def main():
         get_datagenerators_v1(X_train, y_train, X_test, y_test)
 
     # get the model
-    model = build_model(input_shape=X_train.shape[1:])
+    #model = build_model(input_shape=X_train.shape[1:])
+    model = build_vgg17_model(input_shape=X_train.shape[1:])
     logging.info("Model Summary \n%s" % model.to_json())
     model.summary()
 
