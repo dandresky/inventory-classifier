@@ -114,9 +114,8 @@ def main():
             ax.bar(list(inventory_counts.keys()), inventory_counts.values(), width=0.4, color='g')
             ax.set_xlim(0, 20)
             ax.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
-            ax.set_ylabel('Number of Items', fontsize=16)
-            ax.set_xlabel('Inventory Count')
-            ax.set_title('Items vs Inventory Counts')
+            ax.set_ylabel('Number of Unique Items', fontsize=16)
+            ax.set_xlabel('Ocurances of Item in Full Dataset', fontsize=16)
             plt.savefig('item_cnts.png')
             plt.show()
 
@@ -124,9 +123,8 @@ def main():
             ax.bar(list(bin_cnt_dict.keys()), bin_cnt_dict.values(), width=0.4, color='g')
             ax.set_xlim(0, 20)
             ax.set_xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
-            ax.set_ylabel('Bins')
-            ax.set_xlabel('Items per Bin')
-            ax.set_title('Distribution of Items')
+            ax.set_ylabel('Bins', fontsize=16)
+            ax.set_xlabel('Items per Bin', fontsize=16)
             plt.savefig('bin_cnts.png')
             plt.show()
     elif sys.argv[1] == '--si':
