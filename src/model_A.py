@@ -13,7 +13,7 @@ import random
 import tensorflow as tf
 
 BATCH_SIZE = 64
-EPOCHS = 40
+EPOCHS = 80
 # Set NUM_CLASSES to 0 to look for empty bins. Set it to Qty+1 to count items
 NUM_CLASSES = 6
 OPTIMIZER = 'sgd'
@@ -275,7 +275,6 @@ def main():
         workers=8,
         use_multiprocessing=False,
         initial_epoch=0)
-    pickle.dump(hist, open("../../dsi-capstone-data/model_A_history.pkl", "wb"))
 
     logging.info('Scoring the model ...')
     print('\nScoring the model ...')
@@ -307,6 +306,8 @@ def main():
     stop_time = dt.datetime.now()
     print("Scanning and shuffling took ", (stop_time - start_time).total_seconds(), "s.\n")
     logging.info("Training complete. Elapsed time = %.0fs", (stop_time - start_time).total_seconds())
+
+    pickle.dump(hist.history, open("../../dsi-capstone-data/model_A_history.pkl", "wb"))
 
 
 
