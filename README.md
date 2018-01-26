@@ -68,7 +68,9 @@ Using a deep convolutional net pre-trained on large datasets with large number o
 
 The first useful model is one that can recognize empty bins to allow better utilization of space. Bins with a low number of items could also be under-utilized requiring a model that could count up to say 5 generic objects. The following model architectures are considered:  
 
-![](img/vgg16.png)
+<p align="center">
+<img src="img/vgg16.png" width="550">
+</p>
 
 The model on the left is based on the VGG16 architecture where the filter numbers for each layer have been cut in half to reduce training time (a restriction that exists due to the time alloted for the capstone project).
 
@@ -102,7 +104,6 @@ I trained this dataset on both models using using all three optimizers again. Ad
 
 The following image shows a plot of loss vs accuracy over 40 epochs. The best accuracy achieved was approximately 47%. After 40 epochs the model begins to overfit and the accuracy drops.
 
-![](img/loss_vs_acc.png)
 <p align="center">
 <img src="img/loss_vs_acc.png" width="650">
 </p>
