@@ -284,7 +284,7 @@ def main():
     img_proc = ImageProcessing()
     img_proc.pre_process_images(target_size=(224,224),
                                 max_qty=5,    # ignored if empty_bins=True
-                                empty_bins=True)
+                                empty_bins=False)
 
 
 

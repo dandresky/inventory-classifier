@@ -1,5 +1,4 @@
 import datetime as dt
-import keras
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.models import Sequential
@@ -13,7 +12,7 @@ import random
 import tensorflow as tf
 
 BATCH_SIZE = 64
-EPOCHS = 80
+EPOCHS = 40
 # Set NUM_CLASSES to 0 to look for empty bins. Set it to Qty+1 to count items
 NUM_CLASSES = 6
 OPTIMIZER = 'sgd'
@@ -268,8 +267,8 @@ def main():
         epochs=EPOCHS,
         verbose=True,
         callbacks=None,
-        validation_data=None,
-        validation_steps=None,
+        validation_data=test_generator,
+        validation_steps=X_test.shape[0] // BATCH_SIZE,
         class_weight=None,
         max_queue_size=BATCH_SIZE*8,
         workers=8,
