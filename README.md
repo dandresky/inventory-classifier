@@ -93,6 +93,7 @@ I trained this dataset on Model A. The only parameters I have tested are differe
 The following table tracks the results of the experiments using all three optimizers.
 
 ![](img/empty_results.png)
+<img src="img/empty_results.png" width="250">
 
 ### Counting up to 5 Objects in a Bin
 
