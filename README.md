@@ -12,11 +12,15 @@ As an electrical engineer I have developed numerous electronic devices and partn
 
 Machine learning tools can be leveraged to help solve these crucial business issues and many more. With this project, I intend to design a deep learning neural network capable of counting and identifying inventory items in a warehouse from images of their storage locations. Armed with this capability, robotic tools and systems can be developed to automate processes allowing material and production planners to improve operations efficiency and reduce costs.
 
-### Minimum Viable Product (MVP and MVP+)
+### MVP (Minimum Viable Product)
 
-My MVP is a trained network that can distinguish between empty and non-empty bins. My MVP+ is a trained network that can count generic items in a bin. Due to the difficult nature of the problem, I limit counting up to 5 and 10 items.
+My MVP is a trained network that can distinguish between empty and non-empty bins.
 
-### MVP ++
+### MVP+
+
+My MVP+ is a trained network that can count generic items in a bin. Due to the difficult nature of the problem, I limit counting up to 5 and 10 items.
+
+### MVP++
 
 As time permits, I will expand the project to classify items either categorically or as unique part numbers/descriptions.
 
@@ -86,13 +90,21 @@ See this [Keras blog](https://blog.keras.io/building-powerful-image-classificati
 
 I trained this dataset on Model A. The only parameters I have tested are different optimizer types (Adam, RMSProp, and SGD). As shown in the data below, SGD proved to be the best optimizer for this problem, achieving nearly 98% accuracy.
 
-![]()
+The following table tracks the results of the experiments using all three optimizers.
+
+![](../img/empty_results.png)
 
 ### Counting up to 5 Objects in a Bin
 
-I trained this dataset on both models using using all three optimizers again. Adam and RMSProp performed poorly. On the VGG16 model I saw no change in metrics after 10 epochs and abandoned these optimizers. The SGD optimizer proved to be the best here and ran all subsequent tests using this optimizer.
+I trained this dataset on both models using using all three optimizers again. Adam and RMSProp performed poorly. On the VGG16 model I saw no change in metrics after 10 epochs and abandoned these optimizers. The SGD optimizer proved to be the best here and I ran all subsequent tests using this optimizer.
 
-![]()
+The following image shows a plot of loss vs accuracy over 40 epochs. The best accuracy achieved was approximately 47%. After 40 epochs the model begins to overfit and the accuracy drops.
+
+![](../img/loss_vs_acc.png)
+
+The following table tracks the results of the experiments using both models with all three optimizers.
+
+![](../img/counting_results.png)
 
 # Miscellaneous
 
