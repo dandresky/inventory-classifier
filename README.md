@@ -92,7 +92,7 @@ I trained this dataset on Model A. The only parameters I have tested are differe
 
 The following table tracks the results of the experiments using all three optimizers.
 
-![](../img/empty_results.png)
+![](img/empty_results.png)
 
 ### Counting up to 5 Objects in a Bin
 
@@ -100,11 +100,11 @@ I trained this dataset on both models using using all three optimizers again. Ad
 
 The following image shows a plot of loss vs accuracy over 40 epochs. The best accuracy achieved was approximately 47%. After 40 epochs the model begins to overfit and the accuracy drops.
 
-![](../img/loss_vs_acc.png)
+![](img/loss_vs_acc.png)
 
 The following table tracks the results of the experiments using both models with all three optimizers.
 
-![](../img/counting_results.png)
+![](img/counting_results.png)
 
 # Miscellaneous
 
